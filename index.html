@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expense Tracker — Visual</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light shadow-sm custom-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">Expense Visualizer</a>
+      <div class="d-flex align-items-center gap-2">
+        <div class="dropdown">
+          <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            📊 Data
+          </button>
+          <ul class="dropdown-menu">
+            <li><button id="exportBtn" class="dropdown-item">📤 Export Data</button></li>
+            <li><button id="importBtn" class="dropdown-item">📥 Import Data</button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button id="clearBtn" class="dropdown-item text-danger">🗑️ Clear All</button></li>
+          </ul>
+        </div>
+        <button id="themeToggle" class="btn btn-outline-secondary btn-sm" title="Toggle dark mode">🌗</button>
+        <input type="file" id="importFile" accept=".json,.csv" style="display:none;">
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid py-4">
+    <div class="row g-4">
+      <aside class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Add Expense</h5>
+            <form id="expenseForm" class="mb-3">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">💵 Amount *</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input id="amount" type="number" step="0.01" class="form-control" placeholder="0.00" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">🏷️ Category *</label>
+                <select id="category" class="form-select" required>
+                  <option value="Food">🍔 Food & Dining</option>
+                  <option value="Travel">✈️ Travel & Transport</option>
+                  <option value="Shopping">🛍️ Shopping</option>
+                  <option value="Bills">💡 Bills & Utilities</option>
+                  <option value="Entertainment">🎬 Entertainment</option>
+                  <option value="Health">🏥 Health & Medical</option>
+                  <option value="Other">📝 Other</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">📅 Date *</label>
+                <input id="date" type="date" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">📝 Description</label>
+                <input id="note" type="text" class="form-control" placeholder="Add details about this expense...">
+              </div>
+              <button class="btn btn-success w-100" type="submit">💰 Add Expense</button>
+            </form>
+
+            <div class="mt-3">
+              <h6>Quick Filters</h6>
+              <div id="categoryFilters" class="d-flex flex-wrap gap-2">
+                <!-- dynamic buttons -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3 card shadow-sm">
+          <div class="card-body">
+            <h6 class="card-title">🔍 Advanced Filters</h6>
+            
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Search</label>
+              <input id="search" class="form-control" placeholder="Search by description or amount...">
+            </div>
+            
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold">Min Amount</label>
+                <input id="minAmount" type="number" step="0.01" class="form-control" placeholder="$0.00">
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold">Max Amount</label>
+                <input id="maxAmount" type="number" step="0.01" class="form-control" placeholder="$999.99">
+              </div>
+            </div>
+            
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label fw-semibold">From Date</label>
+                <input id="fromDate" type="date" class="form-control">
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-semibold">To Date</label>
+                <input id="toDate" type="date" class="form-control">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Sort By</label>
+              <select id="sortBy" class="form-select">
+                <option value="date_desc">📅 Date (newest first)</option>
+                <option value="date_asc">📅 Date (oldest first)</option>
+                <option value="amount_desc">💰 Amount (highest first)</option>
+                <option value="amount_asc">💰 Amount (lowest first)</option>
+                <option value="category">🏷️ Category (A-Z)</option>
+              </select>
+            </div>
+            
+            <div class="d-flex gap-2">
+              <button id="clearFilters" class="btn btn-outline-secondary btn-sm">🔄 Reset</button>
+              <button id="applyFilters" class="btn btn-primary btn-sm">✨ Apply</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="col-lg-8">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm h-100 stats-card">
+              <div class="card-body text-center">
+                <div class="stats-icon mb-2">💰</div>
+                <div class="h5 mb-1 stats-value" id="totalAmount">$0.00</div>
+                <small class="text-muted stats-label">This Month</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm h-100 stats-card">
+              <div class="card-body text-center">
+                <div class="stats-icon mb-2">📊</div>
+                <div class="h5 mb-1 stats-value" id="avgAmount">$0.00</div>
+                <small class="text-muted stats-label">Avg per Transaction</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm h-100 stats-card">
+              <div class="card-body text-center">
+                <div class="stats-icon mb-2">📈</div>
+                <div class="h5 mb-1 stats-value" id="monthlyChange">0%</div>
+                <small class="text-muted stats-label">vs Last Month</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card shadow-sm h-100 stats-card">
+              <div class="card-body text-center">
+                <div class="stats-icon mb-2">🔥</div>
+                <div class="h5 mb-1 stats-value" id="maxTransaction">$0.00</div>
+                <small class="text-muted stats-label">Largest Transaction</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card chart-card shadow-sm h-100">
+              <div class="card-body">
+                <h6>Spending by Category</h6>
+                <canvas id="pieChart" height="240"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card chart-card shadow-sm h-100">
+              <div class="card-body">
+                <h6>Spending Trend (last 6 months)</h6>
+                <canvas id="lineChart" height="240"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm mt-3 transactions-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="card-title mb-0">📋 Recent Transactions</h6>
+              <small class="text-muted" id="filteredCount">Loading...</small>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0 align-middle transactions-table">
+                <thead class="table-header">
+                  <tr>
+                    <th>📅 Date</th>
+                    <th>📝 Description</th>
+                    <th>🏷️ Category</th>
+                    <th class="text-end">💰 Amount</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="txnTable">
+                  <!-- dynamic rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

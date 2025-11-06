@@ -1,0 +1,685 @@
+:root{
+  --bg:#ffffff; --text:#222; --muted:#6c757d; --card:#fff;
+  --accent:#0d6efd; --border:#dee2e6; --input-bg:#fff;
+}
+body{
+  background:var(--bg) !important;
+  color:var(--text) !important;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  transition:background .3s ease,color .3s ease;
+  padding-bottom:40px;
+}
+.card{ 
+  background:var(--card) !important; 
+  border-color:var(--border) !important;
+  transition:transform .18s ease, box-shadow .18s ease; 
+}
+.card:hover{ transform:translateY(-3px); }
+
+/* Custom navbar styling */
+.custom-navbar {
+  background: var(--card) !important;
+  border-bottom: 1px solid var(--border);
+}
+.custom-navbar .navbar-brand {
+  color: var(--text) !important;
+}
+
+/* dark mode */
+body.dark{ 
+  --bg:#1a1d29; --text:#e2e8f0; --muted:#94a3b8; 
+  --card:#2d3748; --accent:#60a5fa; --border:#4a5568; 
+  --input-bg:#374151;
+}
+
+/* dark mode overrides for Bootstrap components */
+body.dark .navbar-light {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+body.dark .navbar-light .navbar-brand,
+body.dark .navbar-light .navbar-nav .nav-link {
+  color: var(--text) !important;
+}
+body.dark .form-control,
+body.dark .form-select {
+  background: var(--input-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark .form-control:focus,
+body.dark .form-select:focus {
+  background: var(--input-bg) !important;
+  border-color: var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 0.15rem rgba(96, 165, 250, 0.25) !important;
+}
+body.dark .form-control::placeholder {
+  color: var(--muted) !important;
+}
+body.dark .table {
+  color: var(--text) !important;
+}
+body.dark .table thead th {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  background: var(--card) !important;
+}
+body.dark .table td {
+  border-color: var(--border) !important;
+}
+body.dark .table-hover tbody tr:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+body.dark .text-muted {
+  color: var(--muted) !important;
+}
+body.dark .btn-outline-secondary {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark .btn-outline-secondary:hover {
+  background: var(--border) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+body.dark .btn-outline-primary {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+body.dark .btn-outline-primary:hover,
+body.dark .btn-outline-primary.active {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+body.dark .btn-outline-danger {
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+}
+body.dark .btn-outline-danger:hover {
+  background: #f87171 !important;
+  border-color: #f87171 !important;
+  color: white !important;
+}
+body.dark .card-title,
+body.dark .card-body h5,
+body.dark .card-body h6 {
+  color: var(--text) !important;
+}
+body.dark .form-label {
+  color: var(--text) !important;
+}
+body.dark small {
+  color: var(--muted) !important;
+}
+body.dark .filter-btn:not(.active) {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+body.dark .filter-btn.active {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+  border-color: var(--accent) !important;
+}
+body.dark .filter-btn:hover:not(.active) {
+  background: rgba(96, 165, 250, 0.15) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+/* Professional enhancements */
+.notification {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border: none;
+}
+
+.input-group-text {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+.table thead.table-dark th {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+}
+
+body.dark .table thead.table-dark th {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+
+.badge {
+  font-size: 0.75em !important;
+}
+
+.btn-group-sm .btn {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.75rem;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Enhanced card hover effects */
+.card {
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: var(--accent);
+}
+
+body.dark .card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Professional form styling */
+.form-control, .form-select {
+  border-radius: 6px;
+  padding: 0.75rem;
+  transition: all 0.15s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1), 0 0 0 3px rgba(var(--accent-rgb, 13, 110, 253), 0.1);
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+body.dark .dropdown-menu {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .dropdown-item {
+  color: var(--text) !important;
+}
+
+body.dark .dropdown-item:hover {
+  background: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* Fix statistics cards visibility in dark mode */
+body.dark .h5,
+body.dark .h4,
+body.dark .h3,
+body.dark .h2,
+body.dark .h1 {
+  color: var(--text) !important;
+}
+
+body.dark #totalAmount,
+body.dark #avgAmount,
+body.dark #monthlyChange,
+body.dark #maxTransaction {
+  color: var(--text) !important;
+  font-weight: 600;
+}
+
+/* Ensure all card content is visible in dark mode */
+body.dark .card-body * {
+  color: var(--text) !important;
+}
+
+body.dark .card-body .text-muted {
+  color: var(--muted) !important;
+}
+
+/* Special styling for monthly change indicator */
+body.dark .text-danger {
+  color: #f87171 !important;
+}
+
+body.dark .text-success {
+  color: #4ade80 !important;
+}
+
+/* Enhanced statistics cards */
+.stats-card {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  transition: all 0.2s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+.stats-icon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.stats-value {
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  font-size: 1.4rem !important;
+}
+
+.stats-label {
+  color: var(--muted) !important;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* Dark mode specific stats styling */
+body.dark .stats-card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .stats-value {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark .stats-label {
+  color: var(--muted) !important;
+}
+
+body.dark .stats-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Monthly change indicators */
+.change-increase {
+  color: #f87171 !important; /* Red for increase (spending more) */
+}
+
+.change-decrease {
+  color: #4ade80 !important; /* Green for decrease (spending less) */
+}
+
+body.dark .change-increase {
+  color: #fca5a5 !important; /* Lighter red for dark mode */
+}
+
+body.dark .change-decrease {
+  color: #6ee7b7 !important; /* Lighter green for dark mode */
+}
+
+/* Enhanced table visibility for dark mode */
+body.dark .table {
+  color: var(--text) !important;
+  background: var(--card) !important;
+}
+
+body.dark .table tbody tr {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .table td {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .table td div {
+  color: var(--text) !important;
+}
+
+body.dark .table td span {
+  color: inherit !important;
+}
+
+body.dark .table-hover tbody tr:hover {
+  background: rgba(96, 165, 250, 0.1) !important;
+}
+
+/* Fix badges in dark mode */
+body.dark .badge.bg-light {
+  background: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .badge.bg-secondary {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+
+/* Fix transaction text colors */
+body.dark .fw-bold {
+  color: var(--text) !important;
+}
+
+body.dark .fw-semibold {
+  color: var(--text) !important;
+}
+
+/* Amount colors for dark mode */
+body.dark .text-success {
+  color: #ffffff !important;
+  background: rgba(74, 222, 128, 0.2) !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  border: 1px solid rgba(74, 222, 128, 0.4) !important;
+}
+
+body.dark .text-danger {
+  color: #ffffff !important;
+  background: rgba(248, 113, 113, 0.2) !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  border: 1px solid rgba(248, 113, 113, 0.4) !important;
+}
+
+/* Button group styling in dark mode */
+body.dark .btn-group .btn-outline-primary {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+body.dark .btn-group .btn-outline-primary:hover {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+
+body.dark .btn-group .btn-outline-danger {
+  color: #fca5a5 !important;
+  border-color: #fca5a5 !important;
+}
+
+body.dark .btn-group .btn-outline-danger:hover {
+  background: #fca5a5 !important;
+  color: #1a1d29 !important;
+}
+
+/* Enhanced transactions table */
+.transactions-card {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.transactions-table {
+  background: var(--card) !important;
+}
+
+.table-header th {
+  background: var(--accent) !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 600;
+  padding: 1rem 0.75rem;
+}
+
+body.dark .table-header th {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+
+/* Transaction row styling */
+.transactions-table tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.transactions-table tbody tr:hover {
+  background: rgba(var(--accent-rgb, 96, 165, 250), 0.08) !important;
+  transform: translateX(2px);
+}
+
+body.dark .transactions-table tbody tr:hover {
+  background: rgba(96, 165, 250, 0.12) !important;
+}
+
+/* Empty state styling */
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--muted) !important;
+}
+
+.empty-state .h5 {
+  color: var(--muted) !important;
+  margin-bottom: 0.5rem;
+}
+
+body.dark .empty-state {
+  color: var(--muted) !important;
+}
+
+body.dark .empty-state .h5 {
+  color: var(--muted) !important;
+}
+
+/* Transaction element styling */
+.date-badge {
+  background: var(--accent) !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+}
+
+body.dark .date-badge {
+  background: var(--accent) !important;
+  color: #1a1d29 !important;
+}
+
+.category-badge {
+  background: var(--border) !important;
+  color: var(--text) !important;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+}
+
+body.dark .category-badge {
+  background: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* Removed - replaced with inline styles in JavaScript */
+
+/* Simplified table cell styling */
+.desc-cell {
+  padding: 0.75rem;
+}
+
+/* Clean and simple transaction description styling */
+.transaction-desc {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ultimate fix for transaction descriptions in dark mode */
+body.dark .transaction-desc {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  padding: 6px 10px !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  display: block !important;
+  min-height: 20px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Make sure the entire transactions table is visible in dark mode */
+body.dark .transactions-table {
+  background: var(--card) !important;
+}
+
+body.dark .transactions-table tbody tr {
+  background: var(--card) !important;
+}
+
+body.dark .transactions-table tbody tr:hover {
+  background: rgba(96, 165, 250, 0.1) !important;
+}
+
+body.dark .transactions-table td {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+/* Fix amount display visibility in dark mode */
+body.dark .amount-display {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark .high-amount {
+  color: #ffffff !important;
+  background-color: rgba(248, 113, 113, 0.2) !important;
+  border-color: rgba(248, 113, 113, 0.4) !important;
+}
+
+body.dark .low-amount {
+  color: #ffffff !important;
+  background-color: rgba(74, 222, 128, 0.2) !important;
+  border-color: rgba(74, 222, 128, 0.4) !important;
+}
+
+/* Ensure all currency/monetary displays are visible in dark mode */
+body.dark .h1, body.dark .h2, body.dark .h3, body.dark .h4, body.dark .h5, body.dark .h6 {
+  color: #ffffff !important;
+}
+
+body.dark [id*="Amount"], body.dark [id*="amount"] {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+body.dark .fw-bold {
+  color: #ffffff !important;
+}
+
+.amount-display {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.high-amount {
+  color: #f87171 !important;
+}
+
+.low-amount {
+  color: #4ade80 !important;
+}
+
+body.dark .high-amount {
+  color: #fca5a5 !important;
+}
+
+body.dark .low-amount {
+  color: #6ee7b7 !important;
+}
+
+.action-buttons .btn {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+/* Improve table header visibility */
+.table-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Enhanced animations */
+@keyframes slideInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-in {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* Better responsive table */
+@media (max-width: 768px) {
+  .table-responsive {
+    border-radius: 8px;
+  }
+  
+  .btn-group-sm .btn {
+    padding: 0.2rem 0.3rem;
+    font-size: 0.7rem;
+  }
+}
+
+/* small utilities */
+.chart-card { min-height: 220px; }
+
+/* Filter buttons styling */
+#categoryFilters .btn{ 
+  transition: all .15s ease; 
+  margin: 2px;
+  font-weight: 500;
+}
+#categoryFilters .btn:hover{ 
+  transform: scale(1.03); 
+}
+.filter-btn {
+  border: 2px solid transparent !important;
+}
+.filter-btn:not(.active) {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+.filter-btn.active {
+  background: var(--accent) !important;
+  color: white !important;
+  border-color: var(--accent) !important;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.filter-btn:hover:not(.active) {
+  background: rgba(var(--accent-rgb, 13, 110, 253), 0.1) !important;
+  border-color: var(--accent) !important;
+}
+
+/* table amount color */
+.table .text-amount{ font-weight:600; }
+
+/* responsive tweaks */
+@media (max-width: 992px){
+  aside{ order:1 }
+  main{ order:2 }
+}
+
+/* subtle animations */
+.fade-in{ animation:fadeIn .35s ease both }
+@keyframes fadeIn{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
+
+/* form focus */
+.form-control:focus, .form-select:focus{ box-shadow:0 0 0 .15rem rgba(13,110,253,.12); }
+
+/* small screen table */
+@media (max-width: 560px){
+  .table thead{ display:none }
+  .table tbody tr{ display:block; margin-bottom:10px; border-radius:8px; background:var(--card); padding:10px }
+  .table tbody td{ display:flex; justify-content:space-between; padding:4px 0 }
+}
