@@ -1,18 +1,37 @@
-# Expense Tracker — Frontend (Visualization)
+# Expense Tracker — Frontend with Visualization
 
-A frontend-only Expense Tracker with clean UI, category filtering, search/sort, dark-mode toggle, and interactive charts (Chart.js). Data is persisted to Local Storage.
+A professional frontend-only Expense Tracker with advanced features including dark mode, interactive charts, export/import functionality, and comprehensive filtering options.
 
-Files added
-- `index.html` — main UI, includes Bootstrap and Chart.js via CDN.
-- `css/styles.css` — custom styling and dark-mode rules.
-- `js/app.js` — app logic: localStorage, rendering, charts, filters.
+## ✨ Features
 
-How to run
-1. Open `index.html` in your browser (double-click or right-click -> Open with...).
-2. Add expenses using the form. Charts update immediately.
+- **Professional UI**: Clean, responsive design with dark/light mode toggle
+- **Interactive Charts**: Pie charts for categories and line charts for trends using Chart.js
+- **Advanced Filtering**: Date range, amount range, category filters, and search
+- **Export/Import**: CSV and JSON export/import functionality
+- **Enhanced Statistics**: Monthly comparisons, averages, and spending insights
+- **Transaction Management**: Add, edit, delete transactions with visual feedback
+- **Local Storage**: All data persisted locally in browser storage
+- **Mobile Friendly**: Fully responsive design for all devices
 
-Notes / Next steps
-- Export/import CSV, category manager, and sync to backend are logical next features.
-- You can swap Bootstrap for Tailwind if preferred (small CSS changes required).
+## 🚀 How to Run
 
-Enjoy!
+1. Open `index.html` in your browser (double-click or right-click -> Open with...)
+2. Start adding expenses using the intuitive form
+3. Toggle between light and dark modes using the 🌗 button
+4. Use advanced filters to analyze your spending patterns
+5. Export your data or import existing transaction data
+
+## 📁 Project Structure
+
+- `index.html` — Main application with Bootstrap 5 and Chart.js CDN
+- `css/styles.css` — Custom styling with comprehensive dark mode support
+- `js/app.js` — Complete application logic with localStorage and advanced features
+
+## 🎯 Technologies Used
+
+- HTML5, CSS3, JavaScript (ES6+)
+- Bootstrap 5 for responsive UI
+- Chart.js for interactive visualizations
+- Local Storage for data persistence
+
+Enjoy tracking your expenses with style! 💰📊
