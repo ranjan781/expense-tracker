@@ -9,6 +9,12 @@ body{
   transition:background .3s ease,color .3s ease;
   padding-bottom:40px;
 }
+
+/* Ensure body dark mode works */
+body.dark {
+  background: #1a1d29 !important;
+  color: #e2e8f0 !important;
+}
 .card{ 
   background:var(--card) !important; 
   border-color:var(--border) !important;
@@ -27,9 +33,15 @@ body{
 
 /* dark mode */
 body.dark{ 
-  --bg:#1a1d29; --text:#e2e8f0; --muted:#94a3b8; 
-  --card:#2d3748; --accent:#60a5fa; --border:#4a5568; 
-  --input-bg:#374151;
+  --bg:#1a1d29 !important; 
+  --text:#e2e8f0 !important; 
+  --muted:#94a3b8 !important; 
+  --card:#2d3748 !important; 
+  --accent:#60a5fa !important; 
+  --border:#4a5568 !important; 
+  --input-bg:#374151 !important;
+  background: #1a1d29 !important;
+  color: #e2e8f0 !important;
 }
 
 /* dark mode overrides for Bootstrap components */
@@ -138,6 +150,27 @@ body.dark .filter-btn:hover:not(.active) {
 
 .input-group-text {
   background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* Currency selector styling */
+#currencySelect {
+  border-right: none !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+#currencySelect + #amount {
+  border-left: none !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+body.dark #currencySelect {
+  background: var(--input-bg) !important;
   border-color: var(--border) !important;
   color: var(--text) !important;
 }
@@ -315,6 +348,45 @@ body.dark .change-increase {
 
 body.dark .change-decrease {
   color: #6ee7b7 !important; /* Lighter green for dark mode */
+}
+
+/* Comprehensive dark mode overrides */
+body.dark,
+body.dark * {
+  border-color: var(--border) !important;
+}
+
+body.dark .container-fluid,
+body.dark .card,
+body.dark .navbar {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark .text-dark {
+  color: var(--text) !important;
+}
+
+body.dark .bg-light {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark .text-muted {
+  color: var(--muted) !important;
+}
+
+/* Force dark theme on all elements */
+body.dark .btn-outline-secondary {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-secondary:hover {
+  background: var(--border) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
 }
 
 /* Enhanced table visibility for dark mode */
@@ -682,4 +754,32 @@ body.dark .low-amount {
   .table thead{ display:none }
   .table tbody tr{ display:block; margin-bottom:10px; border-radius:8px; background:var(--card); padding:10px }
   .table tbody td{ display:flex; justify-content:space-between; padding:4px 0 }
+}
+
+/* Edit mode styling */
+.edit-mode {
+  border: 2px solid #ffc107 !important;
+  background: rgba(255, 193, 7, 0.1) !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25) !important;
+}
+
+.edit-mode .card-header {
+  background: #ffc107 !important;
+  color: #000 !important;
+}
+
+body.dark .edit-mode {
+  border-color: #ffd43b !important;
+  background: rgba(255, 212, 59, 0.1) !important;
+}
+
+/* Animation for edit mode */
+@keyframes editPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+.edit-mode {
+  animation: editPulse 2s infinite;
 }

@@ -13,7 +13,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light shadow-sm custom-navbar">
     <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="#">Expense Visualizer</a>
+      <a class="navbar-brand fw-bold" href="#">Expense Visualizer <small id="currencyIndicator" class="text-muted">($)</small></a>
       <div class="d-flex align-items-center gap-2">
         <div class="dropdown">
           <button class="btn btn-outline-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -42,7 +42,17 @@
               <div class="mb-3">
                 <label class="form-label fw-semibold">💵 Amount *</label>
                 <div class="input-group">
-                  <span class="input-group-text">$</span>
+                  <select id="currencySelect" class="form-select" style="max-width: 80px;">
+                    <option value="$">$ USD</option>
+                    <option value="€">€ EUR</option>
+                    <option value="£">£ GBP</option>
+                    <option value="¥">¥ JPY</option>
+                    <option value="₹">₹ INR</option>
+                    <option value="₩">₩ KRW</option>
+                    <option value="₽">₽ RUB</option>
+                    <option value="₪">₪ ILS</option>
+                    <option value="">No Symbol</option>
+                  </select>
                   <input id="amount" type="number" step="0.01" class="form-control" placeholder="0.00" required>
                 </div>
               </div>
@@ -90,11 +100,11 @@
             <div class="row g-2 mb-3">
               <div class="col-6">
                 <label class="form-label fw-semibold">Min Amount</label>
-                <input id="minAmount" type="number" step="0.01" class="form-control" placeholder="$0.00">
+                <input id="minAmount" type="number" step="0.01" class="form-control" placeholder="0.00">
               </div>
               <div class="col-6">
                 <label class="form-label fw-semibold">Max Amount</label>
-                <input id="maxAmount" type="number" step="0.01" class="form-control" placeholder="$999.99">
+                <input id="maxAmount" type="number" step="0.01" class="form-control" placeholder="999.99">
               </div>
             </div>
             
@@ -144,7 +154,7 @@
               <div class="card-body text-center">
                 <div class="stats-icon mb-2">📊</div>
                 <div class="h5 mb-1 stats-value" id="avgAmount">$0.00</div>
-                <small class="text-muted stats-label">Avg per Transaction</small>
+                <small class="text-muted stats-label" id="avgLabel">Avg per Transaction</small>
               </div>
             </div>
           </div>
@@ -162,7 +172,7 @@
               <div class="card-body text-center">
                 <div class="stats-icon mb-2">🔥</div>
                 <div class="h5 mb-1 stats-value" id="maxTransaction">$0.00</div>
-                <small class="text-muted stats-label">Largest Transaction</small>
+                <small class="text-muted stats-label" id="maxLabel">Largest Transaction</small>
               </div>
             </div>
           </div>

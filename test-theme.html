@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Mode Test</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #222;
+            --card-bg: #ffffff;
+            --border: #dee2e6;
+        }
+        
+        body.dark {
+            --bg: #1a1d29 !important;
+            --text: #e2e8f0 !important;
+            --card-bg: #2d3748 !important;
+            --border: #4a5568 !important;
+            background: #1a1d29 !important;
+            color: #e2e8f0 !important;
+        }
+        
+        body {
+            background: var(--bg) !important;
+            color: var(--text) !important;
+            transition: background 0.3s ease, color 0.3s ease;
+            padding: 20px;
+            font-family: system-ui;
+        }
+        
+        .card {
+            background: var(--card-bg) !important;
+            border: 1px solid var(--border) !important;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dark Mode Test</h1>
+    <button id="themeToggle">🌗 Toggle Theme</button>
+    
+    <div class="card">
+        <h3>Test Card</h3>
+        <p>This is a test to check if dark mode is working properly.</p>
+        <p>In dark mode, this text should be light colored on a dark background.</p>
+    </div>
+    
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        
+        themeToggle.addEventListener('click', () => {
+            console.log('Theme toggle clicked');
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            console.log('Dark mode is now:', isDark);
+            
+            if (isDark) {
+                document.body.style.background = '#1a1d29';
+                document.body.style.color = '#e2e8f0';
+                themeToggle.innerHTML = '☀️ Toggle Theme';
+            } else {
+                document.body.style.background = '#ffffff';
+                document.body.style.color = '#222';
+                themeToggle.innerHTML = '🌗 Toggle Theme';
+            }
+        });
+    </script>
+</body>
+</html>

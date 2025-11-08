@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Dark Mode Test</title>
+    <style>
+        body {
+            font-family: system-ui;
+            margin: 20px;
+            padding: 20px;
+            background: #fff;
+            color: #222;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark {
+            background: #1a1d29 !important;
+            color: #e2e8f0 !important;
+        }
+        
+        .card {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            margin: 10px 0;
+        }
+        
+        body.dark .card {
+            background: #2d3748 !important;
+            border-color: #4a5568 !important;
+            color: #e2e8f0 !important;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Dark Mode Test</h1>
+    
+    <button id="themeToggle">🌗 Toggle Dark Mode</button>
+    
+    <div class="card">
+        <h3>Test Card</h3>
+        <p>This is a test card. If dark mode is working, this should switch between light and dark themes.</p>
+        <p><strong>Status:</strong> <span id="status">Light Mode</span></p>
+    </div>
+    
+    <div class="card">
+        <h3>Instructions</h3>
+        <p>Click the toggle button above. You should see:</p>
+        <ul>
+            <li>Background change from white to dark</li>
+            <li>Text change from dark to light</li>
+            <li>Cards change background and text color</li>
+            <li>Button icon change from 🌗 to ☀️</li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const status = document.getElementById('status');
+            
+            console.log('DOM loaded, theme toggle element:', themeToggle);
+            
+            if (themeToggle) {
+                themeToggle.addEventListener('click', function() {
+                    console.log('Theme toggle clicked!');
+                    
+                    document.body.classList.toggle('dark');
+                    const isDark = document.body.classList.contains('dark');
+                    
+                    console.log('Dark mode is now:', isDark);
+                    
+                    if (isDark) {
+                        themeToggle.textContent = '☀️ Toggle Light Mode';
+                        status.textContent = 'Dark Mode';
+                        console.log('Switched to dark mode');
+                    } else {
+                        themeToggle.textContent = '🌗 Toggle Dark Mode';
+                        status.textContent = 'Light Mode';
+                        console.log('Switched to light mode');
+                    }
+                });
+            } else {
+                console.error('Theme toggle button not found!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,31 +1,42 @@
 /* Expense Tracker — frontend-only with Chart.js and localStorage */
+document.addEventListener('DOMContentLoaded', () => {
 (() => {
   const STORAGE_KEY = 'expenses_v1';
   const DEFAULT_CATS = ['Food','Travel','Shopping','Bills','Entertainment','Health','Other'];
 
-  // DOM
-  const amountEl = document.getElementById('amount');
-  const categoryEl = document.getElementById('category');
-  const dateEl = document.getElementById('date');
-  const noteEl = document.getElementById('note');
-  const form = document.getElementById('expenseForm');
-  const txnTable = document.getElementById('txnTable');
-  const totalAmountEl = document.getElementById('totalAmount');
-  const txnCountEl = document.getElementById('txnCount');
-  const categoryFilters = document.getElementById('categoryFilters');
-  const searchEl = document.getElementById('search');
-  const sortByEl = document.getElementById('sortBy');
-  const minAmountEl = document.getElementById('minAmount');
-  const maxAmountEl = document.getElementById('maxAmount');
-  const fromDateEl = document.getElementById('fromDate');
-  const toDateEl = document.getElementById('toDate');
-  const clearFiltersEl = document.getElementById('clearFilters');
-  const applyFiltersEl = document.getElementById('applyFilters');
-  const clearBtn = document.getElementById('clearBtn');
-  const themeToggle = document.getElementById('themeToggle');
-  const exportBtn = document.getElementById('exportBtn');
-  const importBtn = document.getElementById('importBtn');
-  const importFile = document.getElementById('importFile');
+  // DOM elements - will be initialized after DOM loads
+  let amountEl, categoryEl, dateEl, noteEl, form, txnTable, totalAmountEl, txnCountEl;
+  let categoryFilters, searchEl, sortByEl, minAmountEl, maxAmountEl, fromDateEl, toDateEl;
+  let clearFiltersEl, applyFiltersEl, clearBtn, themeToggle, exportBtn, importBtn, importFile, currencySelect;
+
+  // Initialize DOM elements
+  function initializeElements() {
+    amountEl = document.getElementById('amount');
+    categoryEl = document.getElementById('category');
+    dateEl = document.getElementById('date');
+    noteEl = document.getElementById('note');
+    form = document.getElementById('expenseForm');
+    txnTable = document.getElementById('txnTable');
+    totalAmountEl = document.getElementById('totalAmount');
+    txnCountEl = document.getElementById('txnCount');
+    categoryFilters = document.getElementById('categoryFilters');
+    searchEl = document.getElementById('search');
+    sortByEl = document.getElementById('sortBy');
+    minAmountEl = document.getElementById('minAmount');
+    maxAmountEl = document.getElementById('maxAmount');
+    fromDateEl = document.getElementById('fromDate');
+    toDateEl = document.getElementById('toDate');
+    clearFiltersEl = document.getElementById('clearFilters');
+    applyFiltersEl = document.getElementById('applyFilters');
+    clearBtn = document.getElementById('clearBtn');
+    themeToggle = document.getElementById('themeToggle');
+    exportBtn = document.getElementById('exportBtn');
+    importBtn = document.getElementById('importBtn');
+    importFile = document.getElementById('importFile');
+    currencySelect = document.getElementById('currencySelect');
+    
+    console.log('Theme toggle element found:', !!themeToggle);
+  }
 
   // Charts
   let pieChart = null, lineChart = null;
@@ -33,10 +44,140 @@
   // state
   let expenses = [];
   let filter = {category: 'All', search: '', sort: 'date_desc', minAmount: '', maxAmount: '', fromDate: '', toDate: ''};
+  let selectedCurrency = '$'; // Default currency
 
   // helpers
-  const formatCurrency = v => '$' + Number(v).toFixed(2);
+  const formatCurrency = v => {
+    const currency = selectedCurrency || '$';
+    return currency + Number(v).toFixed(2);
+  };
   const uid = ()=> Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  
+  // Currency management
+  function updateCurrency() {
+    if (currencySelect) {
+      selectedCurrency = currencySelect.value;
+    }
+    // Ensure we have a valid currency
+    if (!selectedCurrency) {
+      selectedCurrency = '$';
+    }
+    
+    localStorage.setItem('selectedCurrency', selectedCurrency);
+    
+    // Update currency indicator in navbar
+    const indicator = document.getElementById('currencyIndicator');
+    if (indicator) {
+      const currencyName = getCurrencyName(selectedCurrency);
+      indicator.textContent = selectedCurrency ? `(${selectedCurrency} ${currencyName})` : '(No Symbol)';
+    }
+    
+    // Force immediate update of all currency displays
+    const stats = getAdvancedStats();
+    
+    // Update all currency displays immediately
+    if (totalAmountEl) {
+      totalAmountEl.textContent = formatCurrency(stats.thisMonthTotal || 0);
+    }
+    
+    const avgAmountEl = document.getElementById('avgAmount');
+    if (avgAmountEl) {
+      avgAmountEl.textContent = formatCurrency(stats.avgPerTransaction || 0);
+    }
+    
+    const maxTransactionEl = document.getElementById('maxTransaction');
+    if (maxTransactionEl) {
+      maxTransactionEl.textContent = formatCurrency(stats.maxTransaction || 0);
+    }
+    
+    // Update labels
+    const avgLabelEl = document.getElementById('avgLabel');
+    if (avgLabelEl) {
+      avgLabelEl.textContent = `Avg per ${selectedCurrency} Transaction (${stats.currentCurrencyTransactions})`;
+    }
+    
+    const maxLabelEl = document.getElementById('maxLabel');
+    if (maxLabelEl) {
+      maxLabelEl.textContent = `Largest ${selectedCurrency} Transaction`;
+    }
+    
+    // Also update all transaction amounts in the table
+    renderTable();
+    
+    // Show notification
+    setTimeout(() => {
+      try {
+        showNotification(`Currency changed to ${selectedCurrency} ${getCurrencyName(selectedCurrency)}`, 'success');
+      } catch (error) {
+        console.log('Notification error:', error);
+      }
+    }, 100);
+  }
+  
+  function getCurrencyName(symbol) {
+    const currencies = {
+      '$': 'USD', '€': 'EUR', '£': 'GBP', '¥': 'JPY',
+      '₹': 'INR', '₩': 'KRW', '₽': 'RUB', '₪': 'ILS'
+    };
+    return currencies[symbol] || '';
+  }
+  
+  function loadCurrency() {
+    const saved = localStorage.getItem('selectedCurrency');
+    if (saved !== null) {
+      selectedCurrency = saved;
+      if (currencySelect) {
+        currencySelect.value = selectedCurrency;
+      }
+      updateCurrency(); // Update indicator and initialize all displays
+    } else {
+      // Set default currency to $ if none saved
+      selectedCurrency = '$';
+      if (currencySelect) {
+        currencySelect.value = '$';
+      }
+      updateCurrency(); // Initialize displays with default currency
+    }
+  }
+  
+  // Function to initialize currency displays
+  function initializeCurrencyDisplays() {
+    console.log('Initializing currency displays with:', selectedCurrency);
+    
+    // Initialize all currency displays with default values
+    if (totalAmountEl) {
+      totalAmountEl.textContent = formatCurrency(0);
+      console.log('Initialized totalAmount');
+    } else {
+      console.error('totalAmountEl not found');
+    }
+    
+    const avgAmountEl = document.getElementById('avgAmount');
+    if (avgAmountEl) {
+      avgAmountEl.textContent = formatCurrency(0);
+      console.log('Initialized avgAmount');
+    } else {
+      console.error('avgAmountEl not found');
+    }
+    
+    const maxTransactionEl = document.getElementById('maxTransaction');
+    if (maxTransactionEl) {
+      maxTransactionEl.textContent = formatCurrency(0);
+      console.log('Initialized maxTransaction');
+    } else {
+      console.error('maxTransactionEl not found');
+    }
+    
+    // Update currency indicator
+    const indicator = document.getElementById('currencyIndicator');
+    if (indicator) {
+      const currencyName = getCurrencyName(selectedCurrency);
+      indicator.textContent = selectedCurrency ? `(${selectedCurrency} ${currencyName})` : '($)';
+      console.log('Initialized currency indicator');
+    } else {
+      console.error('currencyIndicator not found');
+    }
+  }
   
   // Export/Import functionality
   function exportData(format = 'json') {
@@ -56,12 +197,13 @@
   }
   
   function convertToCSV(data) {
-    const headers = ['Date', 'Amount', 'Category', 'Note'];
+    const headers = ['Date', 'Amount', 'Category', 'Note', 'Currency'];
     const rows = data.map(exp => [
       exp.date,
       exp.amount,
       exp.category,
-      (exp.note || '').replace(/"/g, '""')
+      (exp.note || '').replace(/"/g, '""'),
+      exp.currency || '$'  // Include currency in export
     ]);
     
     const csvContent = [
@@ -132,7 +274,8 @@
         date: values[0],
         amount: parseFloat(values[1]),
         category: values[2],
-        note: values[3] || ''
+        note: values[3] || '',
+        currency: values[4] || '$'  // Include currency from import, default to $ if missing
       };
     });
   }
@@ -149,8 +292,13 @@
     const thisMonthTotal = thisMonthExpenses.reduce((s, e) => s + Number(e.amount), 0);
     const lastMonthTotal = lastMonthExpenses.reduce((s, e) => s + Number(e.amount), 0);
     
-    const avgPerTransaction = expenses.length > 0 ? expenses.reduce((s, e) => s + Number(e.amount), 0) / expenses.length : 0;
-    const maxTransaction = expenses.length > 0 ? Math.max(...expenses.map(e => Number(e.amount))) : 0;
+    // Filter transactions by currently selected currency for average and max calculations
+    const currentCurrencyExpenses = expenses.filter(e => (e.currency || '$') === selectedCurrency);
+    
+    const avgPerTransaction = currentCurrencyExpenses.length > 0 ? 
+      currentCurrencyExpenses.reduce((s, e) => s + Number(e.amount), 0) / currentCurrencyExpenses.length : 0;
+    const maxTransaction = currentCurrencyExpenses.length > 0 ? 
+      Math.max(...currentCurrencyExpenses.map(e => Number(e.amount))) : 0;
     
     const monthlyChange = lastMonthTotal > 0 ? ((thisMonthTotal - lastMonthTotal) / lastMonthTotal) * 100 : 0;
     
@@ -160,7 +308,8 @@
       monthlyChange,
       avgPerTransaction,
       maxTransaction,
-      totalTransactions: expenses.length
+      totalTransactions: expenses.length,
+      currentCurrencyTransactions: currentCurrencyExpenses.length
     };
   }
   
@@ -308,9 +457,15 @@
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   }
   
+  // Track editing state
+  let editingTransaction = null;
+
   function editTransaction(id) {
     const txn = expenses.find(e => e.id === id);
     if (!txn) return;
+    
+    // Set editing mode
+    editingTransaction = { ...txn }; // Store a copy of the original transaction
     
     // Fill form with transaction data
     amountEl.value = txn.amount;
@@ -318,16 +473,72 @@
     dateEl.value = txn.date;
     noteEl.value = txn.note || '';
     
-    // Remove transaction and let user re-add it
-    expenses = expenses.filter(e => e.id !== id);
-    save();
-    render();
+    // Set currency selector to match transaction currency
+    if (currencySelect && txn.currency) {
+      currencySelect.value = txn.currency;
+      selectedCurrency = txn.currency;
+      updateCurrency();
+    }
+    
+    // Add visual edit mode styling
+    const formCard = form.closest('.card');
+    if (formCard) {
+      formCard.classList.add('edit-mode');
+    }
+    
+    // Update form to show edit mode
+    const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('input[type="submit"]');
+    if (submitBtn) {
+      submitBtn.textContent = '✏️ Update Transaction';
+      submitBtn.className = 'btn btn-warning w-100';
+    }
+    
+    // Add cancel button if it doesn't exist
+    let cancelBtn = document.getElementById('cancelEdit');
+    if (!cancelBtn) {
+      cancelBtn = document.createElement('button');
+      cancelBtn.id = 'cancelEdit';
+      cancelBtn.type = 'button';
+      cancelBtn.className = 'btn btn-secondary w-100 mt-2';
+      cancelBtn.textContent = '❌ Cancel Edit';
+      cancelBtn.addEventListener('click', cancelEdit);
+      submitBtn.parentNode.appendChild(cancelBtn);
+    }
+    cancelBtn.style.display = 'block';
     
     // Scroll to form and focus amount field
     amountEl.focus();
     amountEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
-    showNotification('Transaction loaded for editing. Make changes and click "Add Expense".', 'info');
+    showNotification('Editing transaction. Make changes and click "Update Transaction" or "Cancel Edit".', 'info');
+  }
+  
+  function cancelEdit() {
+    editingTransaction = null;
+    
+    // Remove visual edit mode styling
+    const formCard = form.closest('.card');
+    if (formCard) {
+      formCard.classList.remove('edit-mode');
+    }
+    
+    // Reset form
+    form.reset();
+    
+    // Reset submit button
+    const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('input[type="submit"]');
+    if (submitBtn) {
+      submitBtn.textContent = 'Add Expense';
+      submitBtn.className = 'btn btn-primary w-100';
+    }
+    
+    // Hide cancel button
+    const cancelBtn = document.getElementById('cancelEdit');
+    if (cancelBtn) {
+      cancelBtn.style.display = 'none';
+    }
+    
+    showNotification('Edit cancelled.', 'info');
   }
 
   function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -445,15 +656,30 @@
   // summary
   function renderSummary(){
     const stats = getAdvancedStats();
-    totalAmountEl.textContent = formatCurrency(stats.thisMonthTotal);
+    console.log('Rendering summary with currency:', selectedCurrency, 'Stats:', stats); // Debug log
+    
+    // Ensure we always show currency even for zero values
+    totalAmountEl.textContent = formatCurrency(stats.thisMonthTotal || 0);
     txnCountEl.textContent = `${stats.totalTransactions} transactions`;
     
     // Update additional stats if elements exist
     const avgAmountEl = document.getElementById('avgAmount');
+    const avgLabelEl = document.getElementById('avgLabel');
     const monthlyChangeEl = document.getElementById('monthlyChange');
     const maxTransactionEl = document.getElementById('maxTransaction');
+    const maxLabelEl = document.getElementById('maxLabel');
     
-    if (avgAmountEl) avgAmountEl.textContent = formatCurrency(stats.avgPerTransaction);
+    if (avgAmountEl) {
+      avgAmountEl.textContent = formatCurrency(stats.avgPerTransaction || 0);
+      console.log('Updated avgAmount to:', formatCurrency(stats.avgPerTransaction || 0)); // Debug log
+    }
+    
+    // Update labels to show currency-specific information
+    if (avgLabelEl) {
+      const currencyName = getCurrencyName(selectedCurrency);
+      avgLabelEl.textContent = `Avg per ${selectedCurrency} Transaction (${stats.currentCurrencyTransactions})`;
+    }
+    
     if (monthlyChangeEl) {
       const isIncrease = stats.monthlyChange >= 0;
       const changeClass = isIncrease ? 'change-increase' : 'change-decrease';
@@ -461,7 +687,16 @@
       const changeText = stats.monthlyChange === 0 ? '0%' : `${changeIcon} ${Math.abs(stats.monthlyChange).toFixed(1)}%`;
       monthlyChangeEl.innerHTML = `<span class="stats-value ${changeClass}">${changeText}</span>`;
     }
-    if (maxTransactionEl) maxTransactionEl.textContent = formatCurrency(stats.maxTransaction);
+    
+    if (maxTransactionEl) {
+      maxTransactionEl.textContent = formatCurrency(stats.maxTransaction || 0);
+      console.log('Updated maxTransaction to:', formatCurrency(stats.maxTransaction || 0)); // Debug log
+    }
+    
+    if (maxLabelEl) {
+      const currencyName = getCurrencyName(selectedCurrency);
+      maxLabelEl.textContent = `Largest ${selectedCurrency} Transaction`;
+    }
   }
 
   // events
@@ -470,8 +705,51 @@
       ev.preventDefault();
       const amt = parseFloat(amountEl.value);
       if(isNaN(amt) || amt<=0) return alert('Enter valid amount');
-      const tx = { id: uid(), amount: amt, category: categoryEl.value, date: dateEl.value || new Date().toISOString().slice(0,10), note: noteEl.value };
-      expenses.unshift(tx);
+      
+      if (editingTransaction) {
+        // Update existing transaction
+        const txIndex = expenses.findIndex(e => e.id === editingTransaction.id);
+        if (txIndex !== -1) {
+          expenses[txIndex] = {
+            id: editingTransaction.id, // Keep original ID
+            amount: amt,
+            category: categoryEl.value,
+            date: dateEl.value || new Date().toISOString().slice(0,10),
+            note: noteEl.value,
+            currency: selectedCurrency || '$'
+          };
+          showNotification('Transaction updated successfully!', 'success');
+        }
+        
+        // Reset edit mode
+        editingTransaction = null;
+        const formCard = form.closest('.card');
+        if (formCard) {
+          formCard.classList.remove('edit-mode');
+        }
+        const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('input[type="submit"]');
+        if (submitBtn) {
+          submitBtn.textContent = 'Add Expense';
+          submitBtn.className = 'btn btn-primary w-100';
+        }
+        const cancelBtn = document.getElementById('cancelEdit');
+        if (cancelBtn) {
+          cancelBtn.style.display = 'none';
+        }
+      } else {
+        // Add new transaction
+        const tx = { 
+          id: uid(), 
+          amount: amt, 
+          category: categoryEl.value, 
+          date: dateEl.value || new Date().toISOString().slice(0,10), 
+          note: noteEl.value,
+          currency: selectedCurrency || '$'
+        };
+        expenses.unshift(tx);
+        showNotification('Transaction added successfully!', 'success');
+      }
+      
       save();
       form.reset();
       render();
@@ -509,16 +787,71 @@
     }
     clearBtn.addEventListener('click', ()=>{ if(confirm('Clear all transactions?')){ expenses=[]; save(); render(); } });
 
-    themeToggle.addEventListener('click', ()=>{
-      document.body.classList.toggle('dark');
-      // store preference
-      localStorage.setItem('theme_pref', document.body.classList.contains('dark') ? 'dark' : 'light');
-      // re-render everything with new theme colors
-      render();
-    });
+    if (themeToggle) {
+      themeToggle.addEventListener('click', ()=>{
+        console.log('Theme toggle clicked'); // Debug log
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        console.log('Dark mode is now:', isDark); // Debug log
+        
+        // store preference
+        localStorage.setItem('theme_pref', isDark ? 'dark' : 'light');
+        
+        // Force immediate style update
+        if (isDark) {
+          document.body.style.background = '#1a1d29';
+          document.body.style.color = '#e2e8f0';
+          // Update theme toggle button text for feedback
+          themeToggle.innerHTML = '☀️';
+          themeToggle.title = 'Switch to light mode';
+        } else {
+          document.body.style.background = '#ffffff';
+          document.body.style.color = '#222';
+          // Update theme toggle button text for feedback
+          themeToggle.innerHTML = '🌗';
+          themeToggle.title = 'Switch to dark mode';
+        }
+        
+        // re-render everything with new theme colors
+        render();
+      });
+    } else {
+      console.error('Theme toggle button not found!');
+    }
 
+    // Currency selector event
+    if (currencySelect) {
+      console.log('Setting up currency selector event listener');
+      
+      // Test event
+      currencySelect.addEventListener('change', function(event) {
+        console.log('Currency changed to:', event.target.value);
+        updateCurrency();
+      });
+      
+      console.log('Currency selector value:', currencySelect.value);
+    } else {
+      console.error('Currency selector not found!');
+    }
+    
     // initialize theme from storage
-    const pref = localStorage.getItem('theme_pref'); if(pref==='dark') document.body.classList.add('dark');
+    const pref = localStorage.getItem('theme_pref'); 
+    console.log('Loaded theme preference:', pref); // Debug log
+    if(pref==='dark') {
+      document.body.classList.add('dark');
+      document.body.style.background = '#1a1d29';
+      document.body.style.color = '#e2e8f0';
+      if (themeToggle) {
+        themeToggle.innerHTML = '☀️';
+        themeToggle.title = 'Switch to light mode';
+      }
+      console.log('Applied dark theme'); // Debug log
+    } else {
+      if (themeToggle) {
+        themeToggle.innerHTML = '🌗';
+        themeToggle.title = 'Switch to dark mode';
+      }
+    }
     
     // Export/Import events
     if (exportBtn) {
@@ -600,10 +933,24 @@
   function el(tag,text,cls){ const e=document.createElement(tag); e.textContent = text; if(cls) e.classList.add(...cls); return e; }
 
   // initialization
-  load(); bindEvents(); 
+  initializeElements();
+  load(); 
+  loadCurrency(); // Load saved currency preference
+  
+  // Ensure we have a valid currency before first render
+  if (!selectedCurrency) {
+    selectedCurrency = '$';
+  }
+  console.log('Initial currency set to:', selectedCurrency);
+  
+  // Initialize currency displays
+  initializeCurrencyDisplays();
+  
+  bindEvents(); 
   // ensure default filter is set
   if(!filter.category) filter.category = 'All';
   // set today's date as default
-  dateEl.value = new Date().toISOString().slice(0, 10);
+  if(dateEl) dateEl.value = new Date().toISOString().slice(0, 10);
   render();
 })();
+});

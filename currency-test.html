@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Test</title>
+    <style>
+        body { font-family: system-ui; padding: 20px; }
+        .stats { background: #f8f9fa; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        select { padding: 8px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Currency Statistics Test</h1>
+    
+    <div>
+        <label>Select Currency:</label>
+        <select id="currencySelect">
+            <option value="$">$ USD</option>
+            <option value="€">€ EUR</option>
+            <option value="£">£ GBP</option>
+            <option value="¥">¥ JPY</option>
+            <option value="₹">₹ INR</option>
+        </select>
+    </div>
+
+    <div class="stats">
+        <h3>Statistics</h3>
+        <p>Total Amount: <span id="totalAmount">$100.00</span></p>
+        <p>Average Transaction: <span id="avgAmount">$25.50</span></p>
+        <p>Largest Transaction: <span id="maxAmount">$75.00</span></p>
+    </div>
+
+    <button onclick="addTestData()">Add Test Data</button>
+    <button onclick="updateDisplay()">Update Display</button>
+
+    <script>
+        let selectedCurrency = '$';
+        const testAmounts = [25.50, 75.00, 45.25, 32.75];
+
+        const formatCurrency = (v) => {
+            return selectedCurrency + Number(v).toFixed(2);
+        };
+
+        function updateCurrency() {
+            selectedCurrency = document.getElementById('currencySelect').value;
+            console.log('Currency changed to:', selectedCurrency);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const total = testAmounts.reduce((a, b) => a + b, 0);
+            const avg = total / testAmounts.length;
+            const max = Math.max(...testAmounts);
+
+            document.getElementById('totalAmount').textContent = formatCurrency(total);
+            document.getElementById('avgAmount').textContent = formatCurrency(avg);
+            document.getElementById('maxAmount').textContent = formatCurrency(max);
+        }
+
+        function addTestData() {
+            const newAmount = Math.random() * 100;
+            testAmounts.push(newAmount);
+            updateDisplay();
+            console.log('Added amount:', newAmount);
+        }
+
+        // Initialize
+        document.getElementById('currencySelect').addEventListener('change', updateCurrency);
+        updateDisplay();
+    </script>
+</body>
+</html>
