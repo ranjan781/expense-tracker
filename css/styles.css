@@ -237,16 +237,38 @@ body.dark .card:hover {
 
 body.dark .dropdown-menu {
   background: var(--card) !important;
-  border-color: var(--border) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
+  border-radius: 8px !important;
 }
 
 body.dark .dropdown-item {
   color: var(--text) !important;
+  background: transparent !important;
+  transition: all 0.2s ease !important;
 }
 
-body.dark .dropdown-item:hover {
-  background: var(--border) !important;
-  color: var(--text) !important;
+body.dark .dropdown-item:hover,
+body.dark .dropdown-item:focus {
+  background: var(--accent) !important;
+  color: white !important;
+}
+
+body.dark .dropdown-item:active {
+  background: #2563eb !important;
+  color: white !important;
+}
+
+/* Ensure dropdown headers are visible */
+body.dark .dropdown-header {
+  color: var(--muted) !important;
+  font-weight: 600 !important;
+}
+
+/* Dropdown dividers */
+body.dark .dropdown-divider {
+  border-color: var(--border) !important;
+  opacity: 0.3 !important;
 }
 
 /* Fix statistics cards visibility in dark mode */
@@ -539,13 +561,38 @@ body.dark .empty-state .h5 {
   background: var(--accent) !important;
   color: white !important;
   font-weight: 500;
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 6px;
+  font-size: 0.875rem;
+  min-width: 80px;
+  display: inline-block;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.date-badge .date-part {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.date-badge .time-part {
+  font-size: 0.7rem;
+  opacity: 0.9;
+  font-weight: 400;
+  margin-top: 1px;
 }
 
 body.dark .date-badge {
   background: var(--accent) !important;
   color: #1a1d29 !important;
+}
+
+/* Time styling within date badge */
+.date-badge .time {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  display: block;
+  margin-top: 2px;
 }
 
 .category-badge {
@@ -782,4 +829,1486 @@ body.dark .edit-mode {
 
 .edit-mode {
   animation: editPulse 2s infinite;
+}
+
+/* User Profile Styles */
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+}
+
+.user-avatar-large {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+}
+
+.user-avatar-xl {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: white;
+  margin: 0 auto;
+}
+
+.profile-dropdown {
+  min-width: 280px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border: none;
+  border-radius: 12px;
+}
+
+.profile-dropdown .dropdown-header {
+  padding: 1rem;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  color: white;
+  border-radius: 12px 12px 0 0;
+  margin: -0.5rem -0.5rem 0.5rem -0.5rem;
+}
+
+.profile-dropdown .dropdown-item {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin: 0 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.profile-dropdown .dropdown-item:hover {
+  background: var(--accent);
+  color: white;
+  transform: translateX(4px);
+}
+
+/* Enhanced Dark mode profile dropdown - Complete Visibility Fix */
+body.dark .profile-dropdown {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.7) !important;
+  border-radius: 12px !important;
+}
+
+/* Profile dropdown header with gradient and proper text visibility */
+body.dark .profile-dropdown .dropdown-header {
+  background: linear-gradient(135deg, #60a5fa 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 1rem !important;
+  margin: -0.5rem -0.5rem 0.5rem -0.5rem !important;
+  border: none !important;
+}
+
+/* Comprehensive text visibility in dropdown header */
+body.dark .profile-dropdown .dropdown-header,
+body.dark .profile-dropdown .dropdown-header *,
+body.dark .profile-dropdown .dropdown-header .d-flex,
+body.dark .profile-dropdown .dropdown-header .d-flex *,
+body.dark .profile-dropdown .dropdown-header .ms-2,
+body.dark .profile-dropdown .dropdown-header .ms-2 * {
+  color: white !important;
+}
+
+body.dark .profile-dropdown .dropdown-header .fw-bold,
+body.dark .profile-dropdown .dropdown-header .small,
+body.dark .profile-dropdown .dropdown-header .text-muted,
+body.dark #profileName,
+body.dark #profileEmail {
+  color: white !important;
+  opacity: 1 !important;
+}
+
+/* Specific targeting for profile name and email */
+body.dark #profileName {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+body.dark #profileEmail {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.875rem !important;
+}
+
+/* User avatar in dropdown header */
+body.dark .user-avatar-large {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  color: #60a5fa !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+  font-size: 1.25rem !important;
+}
+
+/* Dropdown menu items with enhanced visibility */
+body.dark .profile-dropdown .dropdown-item {
+  color: var(--text) !important;
+  background: transparent !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 8px !important;
+  margin: 0 0.5rem !important;
+  transition: all 0.2s ease !important;
+  font-weight: 500 !important;
+}
+
+body.dark .profile-dropdown .dropdown-item:hover,
+body.dark .profile-dropdown .dropdown-item:focus {
+  background: var(--accent) !important;
+  color: white !important;
+  transform: translateX(4px) !important;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3) !important;
+}
+
+/* Danger item (logout) with proper visibility */
+body.dark .profile-dropdown .dropdown-item.text-danger {
+  color: #f87171 !important;
+  font-weight: 500 !important;
+}
+
+body.dark .profile-dropdown .dropdown-item.text-danger:hover,
+body.dark .profile-dropdown .dropdown-item.text-danger:focus {
+  background: #dc2626 !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3) !important;
+}
+
+/* Dropdown dividers */
+body.dark .profile-dropdown .dropdown-divider {
+  border-color: var(--border) !important;
+  margin: 0.5rem 0 !important;
+  opacity: 0.4 !important;
+}
+
+/* Profile dropdown button styling */
+body.dark #userProfileDropdown {
+  background: transparent !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  transition: all 0.2s ease !important;
+}
+
+body.dark #userProfileDropdown:hover,
+body.dark #userProfileDropdown:focus {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.3) !important;
+}
+
+body.dark #userProfileDropdown .user-avatar {
+  background: var(--accent) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+body.dark #userDisplayName {
+  color: var(--accent) !important;
+  font-weight: 500 !important;
+}
+
+body.dark #userProfileDropdown:hover #userDisplayName {
+  color: white !important;
+}
+
+/* Force all dropdown content to be visible */
+body.dark .profile-dropdown .dropdown-menu {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* Override any Bootstrap defaults that might hide content */
+body.dark .dropdown-menu.show {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* Emergency visibility override */
+body.dark .profile-dropdown li {
+  color: var(--text) !important;
+}
+
+body.dark .profile-dropdown li button {
+  color: var(--text) !important;
+}
+
+/* Additional Bootstrap overrides for dropdowns */
+body.dark .dropdown-menu.show {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .navbar .dropdown-menu {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.dark .navbar .dropdown-item {
+  color: var(--text) !important;
+}
+
+body.dark .navbar .dropdown-item:hover {
+  background: var(--accent) !important;
+  color: white !important;
+}
+
+/* Force visibility for all profile elements */
+body.dark [class*="profile"] {
+  color: var(--text) !important;
+}
+
+body.dark [id*="profile"] {
+  color: var(--text) !important;
+}
+
+/* Override Bootstrap's default dropdown colors */
+body.dark .dropdown-toggle {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+body.dark .dropdown-toggle:hover,
+body.dark .dropdown-toggle:focus {
+  color: white !important;
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Ensure the profile button shows proper colors */
+body.dark .btn-outline-primary {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-primary:hover,
+body.dark .btn-outline-primary:focus {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+}
+
+/* Profile modal enhancements */
+.modal-content {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 16px 16px;
+}
+
+/* Enhanced dark mode modal fixes */
+body.dark .modal-content {
+  background: var(--card) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7) !important;
+}
+
+body.dark .modal-header {
+  background: linear-gradient(45deg, #374151, #4b5563) !important;
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+body.dark .modal-title {
+  color: white !important;
+}
+
+body.dark .modal-footer {
+  background: var(--card) !important;
+  border-top: 1px solid var(--border) !important;
+}
+
+body.dark .modal-body {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}
+
+body.dark .form-control,
+body.dark .form-select {
+  background: var(--input-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .form-control::placeholder {
+  color: var(--muted) !important;
+}
+
+body.dark .form-control:focus,
+body.dark .form-select:focus {
+  background: var(--input-bg) !important;
+  border-color: var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25) !important;
+}
+
+body.dark .form-label {
+  color: var(--text) !important;
+}
+
+/* Dark mode card improvements */
+body.dark .card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .card-header {
+  background: var(--card) !important;
+  border-bottom-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .card-body {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark .card-title {
+  color: var(--text) !important;
+}
+
+body.dark .card.bg-light {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border) !important;
+}
+
+/* User avatar dark mode enhancements */
+body.dark .user-avatar,
+body.dark .user-avatar-large,
+body.dark .user-avatar-xl {
+  background: linear-gradient(45deg, #60a5fa, #8b5cf6) !important;
+  color: white !important;
+  border: 2px solid var(--border);
+}
+
+/* Text and typography in dark mode */
+body.dark h1, body.dark h2, body.dark h3, 
+body.dark h4, body.dark h5, body.dark h6 {
+  color: var(--text) !important;
+}
+
+body.dark .text-primary {
+  color: var(--accent) !important;
+}
+
+body.dark .text-success {
+  color: #10b981 !important;
+}
+
+body.dark .text-danger {
+  color: #f87171 !important;
+}
+
+body.dark .text-warning {
+  color: #fbbf24 !important;
+}
+
+body.dark .text-info {
+  color: #06b6d4 !important;
+}
+
+body.dark .text-muted {
+  color: var(--muted) !important;
+}
+
+body.dark small {
+  color: var(--muted) !important;
+}
+
+/* Dark mode profile statistics improvements */
+body.dark .row .card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .card-body h6 {
+  color: var(--muted) !important;
+}
+
+body.dark .card-body h4 {
+  color: var(--text) !important;
+}
+
+body.dark .card-body .text-primary {
+  color: var(--accent) !important;
+}
+
+body.dark .card-body .text-success {
+  color: #10b981 !important;
+}
+
+/* Profile modal specific improvements */
+body.dark .modal-dialog .card.bg-light {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .modal-dialog .card.bg-light .card-body {
+  background: transparent !important;
+}
+
+body.dark .modal-dialog .card.bg-light h6 {
+  color: var(--muted) !important;
+}
+
+body.dark .modal-dialog .card.bg-light h4 {
+  color: var(--text) !important;
+}
+
+/* Comprehensive dark mode profile modal fixes */
+body.dark #profileModal .modal-body,
+body.dark #editProfileModal .modal-body,
+body.dark #changePasswordModal .modal-body,
+body.dark #privacySettingsModal .modal-body {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark #profileModal h5,
+body.dark #profileModal h6,
+body.dark #editProfileModal h5,
+body.dark #changePasswordModal h5,
+body.dark #privacySettingsModal h5 {
+  color: var(--text) !important;
+}
+
+body.dark #profileModal .text-muted,
+body.dark #editProfileModal .text-muted,
+body.dark #changePasswordModal .text-muted,
+body.dark #privacySettingsModal .text-muted {
+  color: var(--muted) !important;
+}
+
+body.dark #profileModal strong,
+body.dark #editProfileModal strong,
+body.dark #changePasswordModal strong,
+body.dark #privacySettingsModal strong {
+  color: var(--text) !important;
+}
+
+body.dark #profileModal .row div,
+body.dark #editProfileModal .row div,
+body.dark #changePasswordModal .row div,
+body.dark #privacySettingsModal .row div {
+  color: var(--text) !important;
+}
+
+/* Profile modal specific elements */
+body.dark #profileMemberSince,
+body.dark #profileLastLogin,
+body.dark #profileCurrency,
+body.dark #modalProfileName,
+body.dark #modalProfileEmail {
+  color: var(--text) !important;
+}
+
+/* Account Information section */
+body.dark .mt-4 h6 {
+  color: var(--text) !important;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Profile statistics cards improvements */
+body.dark .card.border-0.bg-light {
+  background: rgba(96, 165, 250, 0.1) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.dark .card.border-0.bg-light .card-title {
+  color: var(--muted) !important;
+}
+
+body.dark .card.border-0.bg-light h4.text-primary {
+  color: var(--accent) !important;
+}
+
+body.dark .card.border-0.bg-light h4.text-success {
+  color: #10b981 !important;
+}
+
+/* Dark mode table improvements for profile data */
+body.dark .table {
+  color: var(--text) !important;
+}
+
+body.dark .table th {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .table td {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Dark mode spinner/loading improvements */
+body.dark .spinner-border {
+  color: var(--accent) !important;
+}
+
+body.dark .loading-spinner {
+  color: var(--accent) !important;
+}
+
+/* Enhanced modal content visibility */
+body.dark .modal-content * {
+  color: inherit !important;
+}
+
+body.dark .modal-header .modal-title {
+  color: white !important;
+}
+
+body.dark .modal-body p,
+body.dark .modal-body div,
+body.dark .modal-body span {
+  color: var(--text) !important;
+}
+
+/* Form labels and inputs in modals */
+body.dark .modal-body .form-label {
+  color: var(--text) !important;
+  font-weight: 500;
+}
+
+body.dark .modal-body .form-control,
+body.dark .modal-body .form-select {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .modal-body .form-control:focus,
+body.dark .modal-body .form-select:focus {
+  background: var(--input-bg) !important;
+  border-color: var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25) !important;
+}
+
+/* Privacy settings modal specific fixes */
+body.dark .privacy-option strong {
+  color: var(--text) !important;
+}
+
+body.dark .privacy-option .text-muted {
+  color: var(--muted) !important;
+}
+
+body.dark .privacy-section {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid var(--border) !important;
+}
+
+body.dark .privacy-section-title {
+  color: var(--accent) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+/* Button improvements in dark mode */
+body.dark .modal-footer .btn {
+  border-width: 1px !important;
+}
+
+body.dark .modal-footer .btn-secondary {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .modal-footer .btn-secondary:hover {
+  background: var(--border) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .modal-footer .btn-primary {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+}
+
+body.dark .modal-footer .btn-primary:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: white !important;
+}
+
+/* Text content in profile modal */
+body.dark .text-center h5,
+body.dark .text-center p {
+  color: var(--text) !important;
+}
+
+body.dark .row .col-sm-4,
+body.dark .row .col-sm-8 {
+  color: var(--text) !important;
+}
+
+/* Avatar styling in dark mode */
+body.dark .user-avatar-xl {
+  background: linear-gradient(45deg, #60a5fa, #8b5cf6) !important;
+  border: 2px solid var(--border) !important;
+  color: white !important;
+}
+
+/* Force all profile modal content to be visible */
+body.dark .modal {
+  color: var(--text) !important;
+}
+
+body.dark .modal * {
+  color: var(--text) !important;
+}
+
+body.dark .modal .text-muted {
+  color: var(--muted) !important;
+}
+
+body.dark .modal .text-primary {
+  color: var(--accent) !important;
+}
+
+body.dark .modal .text-success {
+  color: #10b981 !important;
+}
+
+body.dark .modal h1,
+body.dark .modal h2,
+body.dark .modal h3,
+body.dark .modal h4,
+body.dark .modal h5,
+body.dark .modal h6 {
+  color: var(--text) !important;
+}
+
+body.dark .modal p,
+body.dark .modal div,
+body.dark .modal span,
+body.dark .modal strong {
+  color: var(--text) !important;
+}
+
+/* Specific profile elements */
+body.dark #modalProfileName {
+  color: var(--text) !important;
+  font-weight: bold;
+}
+
+body.dark #modalProfileEmail {
+  color: var(--muted) !important;
+}
+
+body.dark #profileTotalExpenses {
+  color: var(--accent) !important;
+  font-weight: bold;
+}
+
+body.dark #profileTotalTransactions {
+  color: #10b981 !important;
+  font-weight: bold;
+}
+
+body.dark #profileMemberSince,
+body.dark #profileLastLogin,
+body.dark #profileCurrency {
+  color: var(--text) !important;
+}
+
+/* Account Information section styling */
+body.dark .mt-4 {
+  color: var(--text) !important;
+}
+
+body.dark .mt-4 * {
+  color: var(--text) !important;
+}
+
+body.dark .row .col-sm-4 strong {
+  color: var(--text) !important;
+  font-weight: 600;
+}
+
+/* Override any Bootstrap defaults that might interfere */
+body.dark .modal-content .text-center h5 {
+  color: var(--text) !important;
+}
+
+body.dark .modal-content .text-center p {
+  color: var(--muted) !important;
+}
+
+/* Ensure card titles are visible */
+body.dark .card-title {
+  color: var(--muted) !important;
+  font-weight: 500;
+}
+
+/* Additional backup rules */
+body.dark [id*="profile"] {
+  color: var(--text) !important;
+}
+
+body.dark [id*="modal"] {
+  color: var(--text) !important;
+}
+
+/* Profile dropdown header specific fixes */
+body.dark #profileName {
+  color: white !important;
+  font-weight: bold !important;
+}
+
+body.dark #profileEmail {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.dark .profile-dropdown .dropdown-header .fw-bold {
+  color: white !important;
+}
+
+body.dark .profile-dropdown .dropdown-header .small {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Additional profile dropdown fixes */
+body.dark .user-avatar-large {
+  background: linear-gradient(45deg, #60a5fa, #8b5cf6) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Ensure all modal backdrop and content is proper */
+body.dark .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Final override for any stubborn elements */
+body.dark .modal-body .text-center > * {
+  color: var(--text) !important;
+}
+
+body.dark .modal-body .row > * {
+  color: var(--text) !important;
+}
+
+body.dark .modal-body .mt-4 > * {
+  color: var(--text) !important;
+}
+
+/* Emergency visibility fixes - force all text to be visible */
+body.dark .modal-content {
+  background: var(--card) !important;
+  color: var(--text) !important;
+}
+
+body.dark .modal-content,
+body.dark .modal-content * {
+  color: var(--text) !important;
+}
+
+body.dark .modal-content .text-muted,
+body.dark .modal-content .text-muted * {
+  color: var(--muted) !important;
+}
+
+body.dark .modal-content .text-primary,
+body.dark .modal-content .text-primary * {
+  color: var(--accent) !important;
+}
+
+body.dark .modal-content .text-success,
+body.dark .modal-content .text-success * {
+  color: #10b981 !important;
+}
+
+body.dark .modal-content .text-danger,
+body.dark .modal-content .text-danger * {
+  color: #f87171 !important;
+}
+
+/* Profile statistics enhancement */
+body.dark .card.bg-light .card-body {
+  background: rgba(96, 165, 250, 0.1) !important;
+  color: var(--text) !important;
+}
+
+body.dark .card.bg-light .card-body * {
+  color: inherit !important;
+}
+
+body.dark .card.bg-light .text-primary {
+  color: var(--accent) !important;
+}
+
+body.dark .card.bg-light .text-success {
+  color: #10b981 !important;
+}
+
+/* Dropdown header complete override */
+body.dark .dropdown-header {
+  background: linear-gradient(45deg, #60a5fa, #8b5cf6) !important;
+  color: white !important;
+}
+
+body.dark .dropdown-header,
+body.dark .dropdown-header * {
+  color: white !important;
+}
+
+/* Profile display name in navbar */
+body.dark #userDisplayName {
+  color: var(--text) !important;
+}
+
+/* Responsive profile dropdown */
+@media (max-width: 768px) {
+  .profile-dropdown {
+    min-width: 260px;
+  }
+  
+  .user-avatar-xl {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+}
+
+/* Privacy Settings Styles */
+.privacy-section {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  background: var(--card);
+}
+
+.privacy-section-title {
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.privacy-option {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.privacy-option:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.privacy-option strong {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.privacy-option .text-muted {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+}
+
+/* Form switches in privacy settings */
+.form-check-input:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.form-check-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Privacy modal specific styles */
+.privacy-settings-modal .modal-lg {
+  max-width: 700px;
+}
+
+/* Sessions list styles */
+.session-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--card);
+  transition: all 0.2s ease;
+}
+
+.session-item:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.session-item.current-session {
+  border-color: var(--accent);
+  background: rgba(13, 110, 253, 0.05);
+}
+
+.session-device-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.session-status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.session-status.active {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.session-status.expired {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* Data management indicators */
+.data-size-indicator {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.retention-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Enhanced dark mode privacy settings */
+body.dark .privacy-section {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .privacy-section-title {
+  color: var(--accent) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+body.dark .privacy-option {
+  border-bottom-color: var(--border) !important;
+}
+
+body.dark .privacy-option strong {
+  color: var(--text) !important;
+}
+
+body.dark .privacy-option .text-muted {
+  color: var(--muted) !important;
+}
+
+body.dark .session-item {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .session-item.current-session {
+  border-color: var(--accent) !important;
+  background: rgba(96, 165, 250, 0.1) !important;
+}
+
+body.dark .session-device-icon {
+  background: var(--accent) !important;
+  color: white !important;
+  border: 1px solid var(--border);
+}
+
+body.dark .session-status.active {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+}
+
+body.dark .session-status.expired {
+  background: rgba(248, 113, 113, 0.2) !important;
+  color: #f87171 !important;
+}
+
+body.dark .form-check-input {
+  background-color: var(--input-bg) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .form-check-input:checked {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+}
+
+body.dark .form-check-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.25) !important;
+}
+
+/* Dark mode privacy badges */
+body.dark .privacy-badge.secure {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+}
+
+body.dark .privacy-badge.warning {
+  background: rgba(251, 191, 36, 0.2) !important;
+  color: #fbbf24 !important;
+}
+
+body.dark .privacy-badge.danger {
+  background: rgba(248, 113, 113, 0.2) !important;
+  color: #f87171 !important;
+}
+
+body.dark .retention-warning {
+  background: rgba(251, 191, 36, 0.15) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+  color: var(--text) !important;
+}
+
+body.dark .data-size-indicator {
+  color: var(--muted) !important;
+}
+
+/* Enhanced button styles for dark mode */
+body.dark .btn-outline-primary {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-primary:hover {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: white !important;
+}
+
+body.dark .btn-outline-secondary {
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-secondary:hover {
+  background: var(--border) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .btn-outline-success {
+  color: #10b981 !important;
+  border-color: #10b981 !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-success:hover {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: white !important;
+}
+
+body.dark .btn-outline-danger {
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-danger:hover {
+  background: #f87171 !important;
+  border-color: #f87171 !important;
+  color: white !important;
+}
+
+body.dark .btn-outline-warning {
+  color: #fbbf24 !important;
+  border-color: #fbbf24 !important;
+  background: transparent !important;
+}
+
+body.dark .btn-outline-warning:hover {
+  background: #fbbf24 !important;
+  border-color: #fbbf24 !important;
+  color: white !important;
+}
+
+/* Dark mode alert styles */
+body.dark .alert {
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .alert-info {
+  background: rgba(6, 182, 212, 0.1) !important;
+  border-color: rgba(6, 182, 212, 0.3) !important;
+  color: #06b6d4 !important;
+}
+
+body.dark .alert-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #10b981 !important;
+}
+
+body.dark .alert-danger {
+  background: rgba(248, 113, 113, 0.1) !important;
+  border-color: rgba(248, 113, 113, 0.3) !important;
+  color: #f87171 !important;
+}
+
+body.dark .alert-warning {
+  background: rgba(251, 191, 36, 0.1) !important;
+  border-color: rgba(251, 191, 36, 0.3) !important;
+  color: #fbbf24 !important;
+}
+
+/* Dark mode badge improvements */
+body.dark .badge {
+  color: white !important;
+}
+
+body.dark .badge.bg-success {
+  background-color: #10b981 !important;
+}
+
+body.dark .badge.bg-danger {
+  background-color: #f87171 !important;
+}
+
+body.dark .badge.bg-warning {
+  background-color: #fbbf24 !important;
+  color: #1f2937 !important;
+}
+
+body.dark .badge.bg-info {
+  background-color: #06b6d4 !important;
+}
+
+body.dark .badge.bg-primary {
+  background-color: var(--accent) !important;
+}
+
+body.dark .badge.bg-secondary {
+  background-color: #6b7280 !important;
+}
+
+/* Dark mode dropdown menu improvements */
+body.dark .dropdown-menu {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+body.dark .dropdown-item {
+  color: var(--text) !important;
+}
+
+body.dark .dropdown-item:hover,
+body.dark .dropdown-item:focus {
+  background-color: var(--accent) !important;
+  color: white !important;
+}
+
+body.dark .dropdown-divider {
+  border-color: var(--border) !important;
+}
+
+body.dark .dropdown-header {
+  color: var(--muted) !important;
+}
+
+/* Dark mode list group improvements */
+body.dark .list-group-item {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark .list-group-item:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Loading states for privacy actions */
+.privacy-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Privacy badges */
+.privacy-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.privacy-badge.secure {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.privacy-badge.warning {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.privacy-badge.danger {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* Account Settings Modal Styles */
+#accountSettingsModal .modal-dialog {
+  max-width: 1200px;
+}
+
+#accountSettingsModal .nav-tabs .nav-link {
+  color: var(--text);
+  border-color: transparent;
+  transition: all 0.3s ease;
+}
+
+#accountSettingsModal .nav-tabs .nav-link:hover {
+  border-color: var(--border);
+  background-color: rgba(var(--accent), 0.1);
+}
+
+#accountSettingsModal .nav-tabs .nav-link.active {
+  background-color: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+/* Profile Avatar Section */
+.profile-avatar-section {
+  padding: 1rem;
+}
+
+.profile-avatar-large {
+  display: inline-block;
+  border: 3px solid var(--border);
+  border-radius: 50%;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.profile-avatar-large:hover {
+  border-color: var(--accent);
+}
+
+.profile-avatar-large img {
+  display: block;
+}
+
+/* Settings Cards */
+#accountSettingsModal .card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  transition: box-shadow 0.3s ease;
+}
+
+#accountSettingsModal .card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#accountSettingsModal .card-title {
+  color: var(--text);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Form Controls in Settings */
+#accountSettingsModal .form-control,
+#accountSettingsModal .form-select {
+  background-color: var(--input-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+#accountSettingsModal .form-control:focus,
+#accountSettingsModal .form-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(var(--accent), 0.25);
+}
+
+/* Switch Controls */
+#accountSettingsModal .form-check-input:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+#accountSettingsModal .form-check-input:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--accent), 0.25);
+}
+
+/* Settings Section Borders */
+#accountSettingsModal .border-bottom {
+  border-color: var(--border) !important;
+}
+
+/* Badge Styles in Settings */
+#accountSettingsModal .badge {
+  font-size: 0.75rem;
+}
+
+#accountSettingsModal .badge.bg-secondary {
+  background-color: var(--muted) !important;
+}
+
+#accountSettingsModal .badge.bg-success {
+  background-color: #28a745 !important;
+}
+
+/* Table Styles in Settings */
+#accountSettingsModal .table {
+  color: var(--text);
+}
+
+#accountSettingsModal .table th {
+  border-color: var(--border);
+  background-color: rgba(var(--accent), 0.1);
+  color: var(--text);
+  font-weight: 600;
+}
+
+#accountSettingsModal .table td {
+  border-color: var(--border);
+}
+
+/* Dark Mode Specific Overrides for Account Settings */
+body.dark #accountSettingsModal .modal-content {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark #accountSettingsModal .modal-header {
+  border-color: var(--border) !important;
+}
+
+body.dark #accountSettingsModal .modal-footer {
+  border-color: var(--border) !important;
+}
+
+body.dark #accountSettingsModal .nav-tabs {
+  border-color: var(--border) !important;
+}
+
+body.dark #accountSettingsModal .nav-tabs .nav-link {
+  color: var(--text) !important;
+}
+
+body.dark #accountSettingsModal .card {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark #accountSettingsModal .form-control,
+body.dark #accountSettingsModal .form-select,
+body.dark #accountSettingsModal textarea {
+  background-color: var(--input-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+body.dark #accountSettingsModal .form-control::placeholder,
+body.dark #accountSettingsModal textarea::placeholder {
+  color: var(--muted) !important;
+}
+
+body.dark #accountSettingsModal .table {
+  --bs-table-bg: var(--card);
+  --bs-table-color: var(--text);
+  --bs-table-border-color: var(--border);
+}
+
+body.dark #accountSettingsModal .table th {
+  background-color: rgba(96, 165, 250, 0.1) !important;
+  color: var(--text) !important;
+}
+
+/* Danger Zone Styling */
+#accountSettingsModal .card.border-warning {
+  border-color: #ffc107 !important;
+}
+
+body.dark #accountSettingsModal .card.border-warning {
+  border-color: #ffc107 !important;
+  background-color: rgba(255, 193, 7, 0.05) !important;
+}
+
+/* Loading State */
+#accountSettingsModal .loading-spinner {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Responsive Design for Settings */
+@media (max-width: 768px) {
+  #accountSettingsModal .modal-dialog {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+  }
+  
+  #accountSettingsModal .nav-tabs {
+    flex-wrap: wrap;
+  }
+  
+  #accountSettingsModal .nav-tabs .nav-link {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+  }
+  
+  .profile-avatar-large img {
+    width: 80px !important;
+    height: 80px !important;
+  }
 }

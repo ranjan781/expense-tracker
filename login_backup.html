@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Expense Tracker</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Google OAuth API -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Facebook SDK -->
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .login-card {
+      background: var(--card);
+      border-radius: 15px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      padding: 2rem;
+      width: 100%;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-header h1 {
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-header p {
+      color: var(--muted);
+      margin: 0;
+    }
+    
+    .form-floating label {
+      color: var(--muted);
+    }
+    
+    .form-control {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    
+    .form-control:focus {
+      background: var(--input-bg);
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .btn-login {
+      background: var(--accent);
+      border: none;
+      padding: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-login:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+    }
+    
+    .auth-links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    
+    .auth-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+    
+    .demo-credentials {
+      background: rgba(13, 110, 253, 0.1);
+      border: 1px solid rgba(13, 110, 253, 0.3);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    
+    .demo-credentials h6 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .social-login {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .btn-social {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-social:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-1px);
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>💰 Expense Tracker</h1>
+        <p>Sign in to manage your finances</p>
+      </div>
+      
+      <div class="demo-credentials">
+        <h6>🚀 Demo Credentials</h6>
+        <div><strong>Email:</strong> demo@expense.com</div>
+        <div><strong>Password:</strong> demo123</div>
+      </div>
+      
+      <form id="loginForm">
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+          <label for="email">📧 Email address</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="password" placeholder="Password" required>
+          <label for="password">🔒 Password</label>
+        </div>
+        
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">
+            Remember me
+          </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-login w-100">
+          <span class="btn-text">Sign In</span>
+          <div class="loading-spinner"></div>
+        </button>
+      </form>
+      
+      <div class="auth-links">
+        <a href="#" id="forgotPassword">Forgot your password?</a> • 
+        <a href="#" id="createAccount">Create account</a>
+      </div>
+      
+      <div class="social-login">
+        <div class="text-center mb-2">
+          <small class="text-muted">Or continue with</small>
+        </div>
+        
+        <!-- Google Sign-In Button -->
+        <div class="d-flex justify-content-center mb-3">
+          <!-- For development/demo - disable real Google button -->
+          <div id="googleSignInContainer" style="display: none;">
+            <div id="g_id_onload"
+                 data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left"
+                 data-width="340">
+            </div>
+          </div>
+          
+          <!-- Demo Google Button (visible by default) -->
+          <button class="btn btn-social" id="googleLoginDemo" style="background-color: #4285f4; color: white; width: 340px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 4px;">
+            <svg style="width: 18px; height: 18px; margin-right: 12px;" viewBox="0 0 24 24">
+              <path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google (Demo)
+          </button>
+        </div>
+        
+        <!-- Facebook Login Button -->
+        <div class="text-center">
+          <button class="btn btn-social" id="facebookLogin" style="background-color: #1877f2; color: white; width: 340px; height: 40px; display: flex; align-items: center; justify-content: center; border: none; border-radius: 4px;">
+            <svg style="width: 18px; height: 18px; margin-right: 12px;" viewBox="0 0 24 24">
+              <path fill="#fff" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            Continue with Facebook (Demo)
+          </button>
+        </div>
+        
+        <!-- Toggle for Real OAuth (when configured) -->
+        <div class="mt-3 text-center">
+          <div class="d-flex justify-content-center align-items-center">
+            <small class="text-muted me-2">Authentication Mode:</small>
+            <a href="#" id="toggleRealOAuth" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+              Enable Real OAuth (requires setup)
+            </a>
+          </div>
+          <div class="mt-1">
+            <small class="text-muted" id="oauthModeStatus">
+              Currently using demo authentication for testing
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="registerForm">
+            <div class="mb-3">
+              <label for="regName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="regName" required>
+            </div>
+            <div class="mb-3">
+              <label for="regEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="regEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="regPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="regPassword" required minlength="6">
+              <div class="form-text">Password must be at least 6 characters long.</div>
+            </div>
+            <div class="mb-3">
+              <label for="regConfirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="regConfirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="forgotForm">
+            <div class="mb-3">
+              <label for="resetEmail" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="resetEmail" required>
+              <div class="form-text">We'll send you a password reset link.</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

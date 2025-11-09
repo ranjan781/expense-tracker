@@ -27,6 +27,36 @@
           </ul>
         </div>
         <button id="themeToggle" class="btn btn-outline-secondary btn-sm" title="Toggle dark mode">🌗</button>
+        
+        <!-- User Profile Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle d-flex align-items-center gap-1" type="button" id="userProfileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="user-avatar">👤</div>
+            <span id="userDisplayName" class="d-none d-md-inline">User</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="userProfileDropdown">
+            <li class="dropdown-header">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar-large">👤</div>
+                <div class="ms-2">
+                  <div id="profileName" class="fw-bold">User Name</div>
+                  <div id="profileEmail" class="small text-muted">user@email.com</div>
+                </div>
+              </div>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button id="viewProfile" class="dropdown-item">👤 View Profile</button></li>
+            <li><button id="editProfile" class="dropdown-item">✏️ Edit Profile</button></li>
+            <li><button id="accountSettings" class="dropdown-item">⚙️ Account Settings</button></li>
+            <li><button id="dataStatistics" class="dropdown-item">📈 My Statistics</button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button id="changePassword" class="dropdown-item">🔑 Change Password</button></li>
+            <li><button id="privacySettings" class="dropdown-item">🔒 Privacy Settings</button></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><button id="logoutBtn" class="dropdown-item text-danger">🚪 Logout</button></li>
+          </ul>
+        </div>
+        
         <input type="file" id="importFile" accept=".json,.csv" style="display:none;">
       </div>
     </div>
@@ -207,7 +237,7 @@
               <table class="table table-hover mb-0 align-middle transactions-table">
                 <thead class="table-header">
                   <tr>
-                    <th>📅 Date</th>
+                    <th>📅 Date & Time</th>
                     <th>📝 Description</th>
                     <th>🏷️ Category</th>
                     <th class="text-end">💰 Amount</th>
@@ -226,7 +256,896 @@
     </div>
   </div>
 
+  <!-- Profile Modal -->
+  <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="profileModalLabel">👤 User Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <div class="user-avatar-xl mx-auto mb-3">👤</div>
+            <h5 id="modalProfileName">User Name</h5>
+            <p class="text-muted" id="modalProfileEmail">user@email.com</p>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <h6 class="card-title">💰 Total Expenses</h6>
+                  <h4 class="text-primary" id="profileTotalExpenses">$0.00</h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 bg-light">
+                <div class="card-body text-center">
+                  <h6 class="card-title">📊 Transactions</h6>
+                  <h4 class="text-success" id="profileTotalTransactions">0</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <h6>Account Information</h6>
+            <div class="row">
+              <div class="col-sm-4"><strong>Member Since:</strong></div>
+              <div class="col-sm-8" id="profileMemberSince">-</div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-sm-4"><strong>Last Login:</strong></div>
+              <div class="col-sm-8" id="profileLastLogin">-</div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-sm-4"><strong>Currency:</strong></div>
+              <div class="col-sm-8" id="profileCurrency">USD ($)</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="editProfileFromModal">Edit Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Profile Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">✏️ Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="editProfileForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="editName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="editName" required>
+            </div>
+            <div class="mb-3">
+              <label for="editEmail" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="editEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="editAvatar" class="form-label">Avatar</label>
+              <select class="form-select" id="editAvatar">
+                <option value="👤">👤 Default</option>
+                <option value="👨">👨 Man</option>
+                <option value="👩">👩 Woman</option>
+                <option value="🧑‍💼">🧑‍💼 Professional</option>
+                <option value="👨‍💻">👨‍💻 Developer</option>
+                <option value="👩‍💻">👩‍💻 Developer (F)</option>
+                <option value="😊">😊 Happy</option>
+                <option value="🤓">🤓 Nerd</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Save Changes</span>
+              <span class="loading-spinner spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="changePasswordModalLabel">🔑 Change Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="changePasswordForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="currentPassword" class="form-label">Current Password</label>
+              <input type="password" class="form-control" id="currentPassword" required>
+            </div>
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="newPassword" required minlength="6">
+            </div>
+            <div class="mb-3">
+              <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirmNewPassword" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">
+              <span class="btn-text">Change Password</span>
+              <span class="loading-spinner spinner-border spinner-border-sm d-none" role="status"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Settings Modal -->
+  <div class="modal fade" id="privacySettingsModal" tabindex="-1" aria-labelledby="privacySettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="privacySettingsModalLabel">🔒 Privacy & Security Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Data Privacy Section -->
+          <div class="privacy-section mb-4">
+            <h6 class="privacy-section-title">📊 Data & Privacy</h6>
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Data Analytics</strong>
+                  <p class="text-muted small mb-0">Allow anonymous usage analytics to improve the app</p>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="analyticsEnabled" checked>
+                </div>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Auto-Save Transactions</strong>
+                  <p class="text-muted small mb-0">Automatically save transactions as you type</p>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="autoSaveEnabled" checked>
+                </div>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Remember Login</strong>
+                  <p class="text-muted small mb-0">Keep me logged in for 30 days</p>
+                </div>
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="rememberLoginEnabled">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Security Section -->
+          <div class="privacy-section mb-4">
+            <h6 class="privacy-section-title">🛡️ Security Settings</h6>
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Session Timeout</strong>
+                  <p class="text-muted small mb-0">Automatically logout after inactivity</p>
+                </div>
+                <select class="form-select form-select-sm" id="sessionTimeout" style="width: auto;">
+                  <option value="15">15 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="60">1 hour</option>
+                  <option value="240">4 hours</option>
+                  <option value="1440" selected>24 hours</option>
+                  <option value="0">Never</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Two-Factor Authentication</strong>
+                  <p class="text-muted small mb-0">Add extra security to your account</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" id="setup2FA">Setup 2FA</button>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Active Sessions</strong>
+                  <p class="text-muted small mb-0">Manage your login sessions</p>
+                </div>
+                <button class="btn btn-outline-secondary btn-sm" id="manageSessions">View Sessions</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Management Section -->
+          <div class="privacy-section mb-4">
+            <h6 class="privacy-section-title">💾 Data Management</h6>
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Download My Data</strong>
+                  <p class="text-muted small mb-0">Export all your expense data</p>
+                </div>
+                <button class="btn btn-outline-success btn-sm" id="downloadData">
+                  <span class="btn-text">📥 Download</span>
+                  <span class="loading-spinner spinner-border spinner-border-sm d-none" role="status"></span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Data Retention</strong>
+                  <p class="text-muted small mb-0">How long to keep your data</p>
+                </div>
+                <select class="form-select form-select-sm" id="dataRetention" style="width: auto;">
+                  <option value="90">3 months</option>
+                  <option value="180">6 months</option>
+                  <option value="365" selected>1 year</option>
+                  <option value="730">2 years</option>
+                  <option value="0">Forever</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Clear All Data</strong>
+                  <p class="text-muted small mb-0">Permanently delete all transactions</p>
+                </div>
+                <button class="btn btn-outline-danger btn-sm" id="clearAllData">
+                  🗑️ Clear Data
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Actions Section -->
+          <div class="privacy-section mb-4">
+            <h6 class="privacy-section-title">⚠️ Account Actions</h6>
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Deactivate Account</strong>
+                  <p class="text-muted small mb-0">Temporarily disable your account</p>
+                </div>
+                <button class="btn btn-outline-warning btn-sm" id="deactivateAccount">
+                  ⏸️ Deactivate
+                </button>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>Delete Account</strong>
+                  <p class="text-muted small mb-0">Permanently delete your account and all data</p>
+                </div>
+                <button class="btn btn-outline-danger btn-sm" id="deleteAccount">
+                  🗑️ Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Privacy Policy Section -->
+          <div class="privacy-section">
+            <h6 class="privacy-section-title">📋 Legal & Compliance</h6>
+            <div class="privacy-option">
+              <div class="d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <strong>Privacy Policy</strong>
+                  <button class="btn btn-link btn-sm p-0" id="viewPrivacyPolicy">View Policy</button>
+                </div>
+                <p class="text-muted small mb-0">Last updated: November 9, 2025</p>
+              </div>
+            </div>
+            
+            <div class="privacy-option">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong>GDPR Compliance</strong>
+                  <p class="text-muted small mb-0">Your data rights under GDPR</p>
+                </div>
+                <span class="badge bg-success">✓ Compliant</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="savePrivacySettings">
+            <span class="btn-text">Save Settings</span>
+            <span class="loading-spinner spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sessions Management Modal -->
+  <div class="modal fade" id="sessionsModal" tabindex="-1" aria-labelledby="sessionsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sessionsModalLabel">🔐 Active Sessions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="sessionsList">
+            <!-- Sessions will be populated here -->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="logoutAllSessions">Logout All Sessions</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account Settings Modal -->
+  <div class="modal fade" id="accountSettingsModal" tabindex="-1" aria-labelledby="accountSettingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="accountSettingsModalLabel">⚙️ Account Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Settings Navigation Tabs -->
+          <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-settings" type="button" role="tab">
+                👤 Profile
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security-settings" type="button" role="tab">
+                🔒 Security
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications-settings" type="button" role="tab">
+                🔔 Notifications
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences-settings" type="button" role="tab">
+                🎨 Preferences
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="data-tab" data-bs-toggle="tab" data-bs-target="#data-settings" type="button" role="tab">
+                💾 Data
+              </button>
+            </li>
+          </ul>
+
+          <!-- Tab Content -->
+          <div class="tab-content" id="settingsTabContent">
+            
+            <!-- Profile Settings Tab -->
+            <div class="tab-pane fade show active" id="profile-settings" role="tabpanel">
+              <div class="row">
+                <div class="col-md-4 text-center mb-4">
+                  <div class="profile-avatar-section">
+                    <div class="profile-avatar-large mb-3">
+                      <img id="profileAvatarImg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiM2MGE1ZmEiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAxMmMyLjIxIDAgNC0xLjc5IDQtNHMtMS43OS00LTQtNC00IDEuNzktNCA0IDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2MmgxNnYtMmMwLTIuNjYtNS4zMy00LTgtNHoiLz4KPC9zdmc+Cjwvc3ZnPg==" 
+                           alt="Profile Avatar" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm" id="changeAvatarBtn">
+                      📷 Change Avatar
+                    </button>
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                  </div>
+                </div>
+                
+                <div class="col-md-8">
+                  <form id="profileSettingsForm">
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+                      </div>
+                      <div class="col-12">
+                        <label for="emailSettings" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="emailSettings" placeholder="Enter email">
+                      </div>
+                      <div class="col-12">
+                        <label for="phoneSettings" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneSettings" placeholder="Enter phone number">
+                      </div>
+                      <div class="col-12">
+                        <label for="bioSettings" class="form-label">Bio</label>
+                        <textarea class="form-control" id="bioSettings" rows="3" placeholder="Tell us about yourself..."></textarea>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="birthdateSettings" class="form-label">Birth Date</label>
+                        <input type="date" class="form-control" id="birthdateSettings">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="locationSettings" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="locationSettings" placeholder="City, Country">
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Security Settings Tab -->
+            <div class="tab-pane fade" id="security-settings" role="tabpanel">
+              <div class="row g-4">
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">🔑 Password & Authentication</h6>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">Change Password</h6>
+                      <p class="card-text small text-muted">Update your account password</p>
+                      <form id="changePasswordForm">
+                        <div class="mb-3">
+                          <label for="currentPassword" class="form-label">Current Password</label>
+                          <input type="password" class="form-control" id="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="newPassword" class="form-label">New Password</label>
+                          <input type="password" class="form-control" id="newPassword" required>
+                          <div class="form-text">Must be at least 8 characters long</div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                          <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm">Update Password</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="card-title">Two-Factor Authentication</h6>
+                      <p class="card-text small text-muted">Add an extra layer of security</p>
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span>Status: <span id="twoFactorStatus" class="badge bg-secondary">Disabled</span></span>
+                      </div>
+                      <button class="btn btn-outline-success btn-sm" id="enable2FA">
+                        🔐 Enable 2FA
+                      </button>
+                      <button class="btn btn-outline-danger btn-sm d-none" id="disable2FA">
+                        🔓 Disable 2FA
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">🔐 Session Management</h6>
+                </div>
+                
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                          <h6 class="card-title mb-1">Active Sessions</h6>
+                          <p class="card-text small text-muted">Manage your login sessions across devices</p>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm" id="viewAllSessions">
+                          View All Sessions
+                        </button>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-sm">
+                          <thead>
+                            <tr>
+                              <th>Device</th>
+                              <th>Location</th>
+                              <th>Last Active</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody id="activeSessionsTable">
+                            <tr>
+                              <td>🖥️ Current Session</td>
+                              <td>--</td>
+                              <td>Active now</td>
+                              <td><span class="badge bg-success">Current</span></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notifications Settings Tab -->
+            <div class="tab-pane fade" id="notifications-settings" role="tabpanel">
+              <div class="row g-4">
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">🔔 Notification Preferences</h6>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Email Notifications</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailExpenseAlerts" checked>
+                        <label class="form-check-label" for="emailExpenseAlerts">
+                          Daily expense summaries
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailBudgetAlerts" checked>
+                        <label class="form-check-label" for="emailBudgetAlerts">
+                          Budget limit warnings
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailMonthlyReports">
+                        <label class="form-check-label" for="emailMonthlyReports">
+                          Monthly expense reports
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="emailSecurityAlerts" checked>
+                        <label class="form-check-label" for="emailSecurityAlerts">
+                          Security and login alerts
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">In-App Notifications</h6>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="inAppExpenseReminders" checked>
+                        <label class="form-check-label" for="inAppExpenseReminders">
+                          Expense entry reminders
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="inAppBudgetNotifications" checked>
+                        <label class="form-check-label" for="inAppBudgetNotifications">
+                          Budget threshold notifications
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="inAppTipsNotifications">
+                        <label class="form-check-label" for="inAppTipsNotifications">
+                          Money-saving tips
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="inAppSoundEffects" checked>
+                        <label class="form-check-label" for="inAppSoundEffects">
+                          Sound effects
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Notification Timing</h6>
+                      <div class="row g-3">
+                        <div class="col-md-6">
+                          <label for="reminderTime" class="form-label">Daily reminder time</label>
+                          <input type="time" class="form-control" id="reminderTime" value="18:00">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="reportDay" class="form-label">Weekly report day</label>
+                          <select class="form-select" id="reportDay">
+                            <option value="0">Sunday</option>
+                            <option value="1" selected>Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Preferences Settings Tab -->
+            <div class="tab-pane fade" id="preferences-settings" role="tabpanel">
+              <div class="row g-4">
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">🎨 Display & Interface</h6>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Theme & Appearance</h6>
+                      <div class="mb-3">
+                        <label for="themePreference" class="form-label">Theme</label>
+                        <select class="form-select" id="themePreference">
+                          <option value="light">☀️ Light</option>
+                          <option value="dark">🌙 Dark</option>
+                          <option value="auto" selected>🔄 Auto (System)</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="accentColor" class="form-label">Accent Color</label>
+                        <select class="form-select" id="accentColor">
+                          <option value="#0d6efd" selected>🔵 Blue</option>
+                          <option value="#6f42c1">🟣 Purple</option>
+                          <option value="#20c997">🟢 Teal</option>
+                          <option value="#fd7e14">🟠 Orange</option>
+                          <option value="#dc3545">🔴 Red</option>
+                          <option value="#198754">✅ Green</option>
+                        </select>
+                      </div>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="compactMode">
+                        <label class="form-check-label" for="compactMode">
+                          Compact display mode
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Regional Settings</h6>
+                      <div class="mb-3">
+                        <label for="defaultCurrency" class="form-label">Default Currency</label>
+                        <select class="form-select" id="defaultCurrency">
+                          <option value="$" selected>$ USD</option>
+                          <option value="€">€ EUR</option>
+                          <option value="£">£ GBP</option>
+                          <option value="¥">¥ JPY</option>
+                          <option value="₹">₹ INR</option>
+                          <option value="₩">₩ KRW</option>
+                          <option value="₽">₽ RUB</option>
+                          <option value="₪">₪ ILS</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="dateFormat" class="form-label">Date Format</label>
+                        <select class="form-select" id="dateFormat">
+                          <option value="MM/DD/YYYY" selected>MM/DD/YYYY</option>
+                          <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                          <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                          <option value="DD MMM YYYY">DD MMM YYYY</option>
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="weekStart" class="form-label">Week starts on</label>
+                        <select class="form-select" id="weekStart">
+                          <option value="0">Sunday</option>
+                          <option value="1" selected>Monday</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">⚙️ Functional Preferences</h6>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Default Values</h6>
+                      <div class="mb-3">
+                        <label for="defaultExpenseCategory" class="form-label">Default expense category</label>
+                        <select class="form-select" id="defaultExpenseCategory">
+                          <option value="">None</option>
+                          <option value="Food">🍔 Food & Dining</option>
+                          <option value="Travel">✈️ Travel & Transport</option>
+                          <option value="Shopping">🛍️ Shopping</option>
+                          <option value="Bills">💡 Bills & Utilities</option>
+                          <option value="Entertainment">🎬 Entertainment</option>
+                          <option value="Health">🏥 Health & Medical</option>
+                          <option value="Other" selected>📝 Other</option>
+                        </select>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="autoFillDate" checked>
+                        <label class="form-check-label" for="autoFillDate">
+                          Auto-fill today's date
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="clearFormAfterAdd" checked>
+                        <label class="form-check-label" for="clearFormAfterAdd">
+                          Clear form after adding expense
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Chart Preferences</h6>
+                      <div class="mb-3">
+                        <label for="defaultChartType" class="form-label">Default chart type</label>
+                        <select class="form-select" id="defaultChartType">
+                          <option value="doughnut" selected>🍩 Doughnut</option>
+                          <option value="pie">🥧 Pie</option>
+                          <option value="bar">📊 Bar</option>
+                          <option value="line">📈 Line</option>
+                        </select>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="animateCharts" checked>
+                        <label class="form-check-label" for="animateCharts">
+                          Animate chart transitions
+                        </label>
+                      </div>
+                      <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="showChartLabels" checked>
+                        <label class="form-check-label" for="showChartLabels">
+                          Show labels on charts
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Data Settings Tab -->
+            <div class="tab-pane fade" id="data-settings" role="tabpanel">
+              <div class="row g-4">
+                <div class="col-12">
+                  <h6 class="border-bottom pb-2">💾 Data Management</h6>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Backup & Export</h6>
+                      <p class="card-text small text-muted">Export and backup your expense data</p>
+                      <div class="d-grid gap-2">
+                        <button class="btn btn-outline-success" id="exportAllData">
+                          📥 Export All Data (JSON)
+                        </button>
+                        <button class="btn btn-outline-info" id="exportCSV">
+                          📄 Export as CSV
+                        </button>
+                        <button class="btn btn-outline-warning" id="exportPDF">
+                          📄 Export as PDF Report
+                        </button>
+                      </div>
+                      <hr>
+                      <div class="mb-3">
+                        <label for="autoBackupFrequency" class="form-label">Auto-backup frequency</label>
+                        <select class="form-select" id="autoBackupFrequency">
+                          <option value="never">Never</option>
+                          <option value="daily">Daily</option>
+                          <option value="weekly" selected>Weekly</option>
+                          <option value="monthly">Monthly</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="card-body">
+                      <h6 class="card-title">Data Synchronization</h6>
+                      <p class="card-text small text-muted">Sync your data across devices</p>
+                      <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="cloudSync">
+                        <label class="form-check-label" for="cloudSync">
+                          Enable cloud synchronization
+                        </label>
+                      </div>
+                      <div class="mb-3">
+                        <small class="text-muted">Last sync: <span id="lastSyncTime">Never</span></small>
+                      </div>
+                      <button class="btn btn-outline-primary btn-sm" id="manualSync" disabled>
+                        🔄 Sync Now
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="card border-warning">
+                    <div class="card-body">
+                      <h6 class="card-title text-warning">⚠️ Danger Zone</h6>
+                      <p class="card-text small">These actions cannot be undone. Please be careful.</p>
+                      <div class="row g-2">
+                        <div class="col-md-4">
+                          <button class="btn btn-outline-warning btn-sm w-100" id="clearAllExpenses">
+                            🗑️ Clear All Expenses
+                          </button>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-outline-danger btn-sm w-100" id="resetAllSettings">
+                            ⚡ Reset All Settings
+                          </button>
+                        </div>
+                        <div class="col-md-4">
+                          <button class="btn btn-danger btn-sm w-100" id="deleteAccountData">
+                            💥 Delete Account
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveAccountSettings">
+            <span class="btn-text">💾 Save Settings</span>
+            <span class="loading-spinner spinner-border spinner-border-sm d-none" role="status"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

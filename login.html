@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Expense Tracker</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Google OAuth API -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Facebook SDK -->
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+      animation: gradientShift 15s ease infinite;
+      background-size: 200% 200%;
+    }
+    
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    
+    /* Floating shapes for background */
+    .login-container::before,
+    .login-container::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    .login-container::before {
+      width: 600px;
+      height: 600px;
+      top: -300px;
+      right: -200px;
+      animation-delay: 0s;
+    }
+    
+    .login-container::after {
+      width: 400px;
+      height: 400px;
+      bottom: -200px;
+      left: -100px;
+      animation-delay: 7s;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-50px) rotate(180deg);
+      }
+    }
+    
+    .login-card {
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 20px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2), 
+                  0 0 100px rgba(102, 126, 234, 0.3);
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 440px;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      z-index: 10;
+      animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .logo-icon {
+      font-size: 2.5rem;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    
+    .login-header h1 {
+      color: #1a1a2e;
+      font-weight: 800;
+      font-size: 2rem;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    
+    .login-header p {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin: 0;
+      font-weight: 400;
+    }
+    
+    .demo-credentials {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(147, 51, 234, 0.08) 100%);
+      border: 1.5px solid rgba(59, 130, 246, 0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.75rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .demo-credentials::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .demo-credentials:hover::before {
+      left: 100%;
+    }
+    
+    .demo-credentials:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 8px 16px rgba(59, 130, 246, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .demo-credentials h6 {
+      color: #3b82f6;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .demo-credentials div {
+      color: #4b5563;
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      font-weight: 500;
+    }
+    
+    .demo-credentials div:last-child {
+      margin-bottom: 0;
+    }
+    
+    .demo-credentials strong {
+      color: #1f2937;
+      font-weight: 600;
+    }
+    
+    .form-floating {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    
+    .form-floating label {
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    
+    .form-control {
+      background: #f9fafb;
+      border: 2px solid #e5e7eb;
+      color: #1f2937;
+      border-radius: 12px;
+      padding: 1rem 1rem 1rem 3rem;
+      height: 58px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      background: #ffffff;
+      border-color: #667eea;
+      color: #1f2937;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .form-floating > label {
+      padding-left: 3rem;
+    }
+    
+    .form-check {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-check-input {
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid #d1d5db;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .form-check-input:checked {
+      background-color: #667eea;
+      border-color: #667eea;
+    }
+    
+    .form-check-label {
+      color: #4b5563;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .btn-login {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+      border-radius: 12px;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-login::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-login:hover {
+      background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4),
+                  0 0 40px rgba(118, 75, 162, 0.3);
+    }
+    
+    .btn-login:hover::before {
+      left: 100%;
+    }
+    
+    .btn-login:active {
+      transform: translateY(-1px);
+    }
+    
+    .auth-links {
+      text-align: center;
+      margin-top: 1.75rem;
+      font-size: 0.9rem;
+    }
+    
+    .auth-links a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    
+    .auth-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #667eea;
+      transition: width 0.3s ease;
+    }
+    
+    .auth-links a:hover {
+      color: #764ba2;
+    }
+    
+    .auth-links a:hover::after {
+      width: 100%;
+    }
+    
+    .social-login {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 2px solid #e5e7eb;
+    }
+    
+    .divider-text {
+      color: #9ca3af;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-social {
+      width: 100%;
+      padding: 0.875rem;
+      margin-bottom: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-social::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(102, 126, 234, 0.1);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s;
+    }
+    
+    .btn-social:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+    
+    .btn-social:hover {
+      border-color: #667eea;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-social svg {
+      width: 20px;
+      height: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .btn-social span {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 576px) {
+      .login-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+      
+      .login-header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .logo-icon {
+        font-size: 2rem;
+      }
+    }
+    
+    /* Dark mode support */
+    @media (prefers-color-scheme: dark) {
+      .login-card {
+        background: rgba(30, 30, 46, 0.95);
+      }
+      
+      .login-header h1 {
+        color: #ffffff;
+      }
+      
+      .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+      }
+      
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #667eea;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo-container">
+          <span class="logo-icon">💰</span>
+          <h1>Expense Tracker</h1>
+        </div>
+        <p>Sign in to manage your finances</p>
+      </div>
+      
+      <div class="demo-credentials">
+        <h6>🚀 Demo Credentials</h6>
+        <div><strong>Email:</strong> demo@expense.com</div>
+        <div><strong>Password:</strong> demo123</div>
+      </div>
+      
+      <form id="loginForm">
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="email" placeholder="name@example.com" required value="demo@expense.com">
+          <label for="email">📧 Email address</label>
+        </div>
+        
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" id="password" placeholder="Password" required value="demo123">
+          <label for="password">🔒 Password</label>
+        </div>
+        
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">
+            Remember me
+          </label>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-login w-100">
+          <span class="btn-text">Sign In</span>
+          <div class="loading-spinner"></div>
+        </button>
+      </form>
+      
+      <div class="auth-links">
+        <a href="#" id="forgotPassword">Forgot your password?</a> • 
+        <a href="#" id="createAccount">Create account</a>
+      </div>
+      
+      <div class="social-login">
+        <div class="text-center mb-3">
+          <span class="divider-text">Or continue with</span>
+        </div>
+        
+        <!-- Google Sign-In Button -->
+        <button class="btn btn-social" id="googleLoginDemo">
+          <svg viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+        
+        <!-- Facebook Login Button -->
+        <button class="btn btn-social" id="facebookLogin">
+          <svg viewBox="0 0 24 24">
+            <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          <span>Continue with Facebook</span>
+        </button>
+      </div>
+        <!-- Toggle for Real OAuth (when configured) -->
+        <div class="mt-3 text-center">
+          <div class="d-flex justify-content-center align-items-center">
+            <small class="text-muted me-2">Authentication Mode:</small>
+            <a href="#" id="toggleRealOAuth" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+              Enable Real OAuth (requires setup)
+            </a>
+          </div>
+          <div class="mt-1">
+            <small class="text-muted" id="oauthModeStatus">
+              Currently using demo authentication for testing
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="registerForm">
+            <div class="mb-3">
+              <label for="regName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="regName" required>
+            </div>
+            <div class="mb-3">
+              <label for="regEmail" class="form-label">Email</label>
+              <input type="email" class="form-control" id="regEmail" required>
+            </div>
+            <div class="mb-3">
+              <label for="regPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="regPassword" required minlength="6">
+              <div class="form-text">Password must be at least 6 characters long.</div>
+            </div>
+            <div class="mb-3">
+              <label for="regConfirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="regConfirmPassword" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create Account</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div class="modal fade" id="forgotModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reset Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="forgotForm">
+            <div class="mb-3">
+              <label for="resetEmail" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="resetEmail" required>
+              <div class="form-text">We'll send you a password reset link.</div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>
